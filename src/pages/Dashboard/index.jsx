@@ -1,5 +1,4 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom";
 import SideDrawer from "../../components/SideDrawer";
 import classes from "./index.module.css";
 
