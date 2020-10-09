@@ -1,0 +1,26 @@
+.MainAppContainer
+{
+    display: grid;
+    grid-template-columns:1fr;
+    grid-template-rows: min-content 1fr;
+    grid-template-areas:
+        'top-nav'
+        'main';
+    min-height: 100vh;
+    gap:10px;
+}
+
+#top-nav
+{
+    grid-area: top-nav;
+}
+
+#side-nav
+{
+    grid-area: aside;
+}
+
+#page
+{
+    grid-area: page;
+}
