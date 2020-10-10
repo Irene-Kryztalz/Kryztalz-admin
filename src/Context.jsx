@@ -64,6 +64,11 @@ class AppProvider extends Component
     sendData = async ( { endpoint, formData, method = "GET", headers, forAuth = false } ) =>
     {
         this.setState( { loading: true } );
+        headers =
+        {
+            ...headers,
+            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-admin-token" ) }`
+        };
 
         let response,
             url = this.state.baseUrl;

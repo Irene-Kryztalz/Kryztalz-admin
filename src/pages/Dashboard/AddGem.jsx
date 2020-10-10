@@ -56,7 +56,7 @@ const config =
         label: "Gem description",
         control: "textarea",
         placeholder: "Type description.",
-        validators: [ required, price ]
+        validators: [ required ]
     },
 
     photos:
@@ -72,13 +72,40 @@ const config =
 function AddGem ()
 {
     const [ formState, changeHandler ] = useForm( config );
+    const { sendData } = useContext( AppContext );
 
     const handleSubmit = async ( ev ) =>
     {
         ev.preventDefault();
-        const formData = extractFormData( formState.state );
+        const formValues = extractFormData( formState.state );
+        const formData = new FormData();
 
-        console.log( formData );
+        for ( const key in formValues ) 
+        {
+            if ( Array.isArray( formValues[ key ] ) )
+            {
+                formValues[ key ].forEach( item => 
+                {
+                    formData.append( key, item );
+                } );
+            }
+            else
+            {
+                formData.append( key, formValues[ key ] );
+            }
+
+        }
+
+        const resp = await sendData(
+            {
+                endpoint: "gems",
+                method: "POST",
+                formData,
+            } );
+
+        console.log( resp );
+
+
     };
 
 

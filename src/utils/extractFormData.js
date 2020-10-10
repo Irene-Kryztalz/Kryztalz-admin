@@ -5,7 +5,7 @@ export const extractFormData = ( formFields ) =>
     {
         if ( formFields[ field ].control === "file" )
         {
-            formData[ field ] = formFields[ field ].photos;
+            formData[ field ] = [ ...formFields[ field ].photos ];
         }
         else
         {

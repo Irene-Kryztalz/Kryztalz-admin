@@ -12,10 +12,7 @@ function GemUpload ( { fields, ...props } )
             <form
                 className={ classes.FormContainer }
                 encType="multipart/form-data"
-                onSubmit={ props.handleSubmit }
-                method="post">
-
-
+                onSubmit={ props.handleSubmit }>
 
                 {
                     fields.map( field => (
@@ -33,7 +30,9 @@ function GemUpload ( { fields, ...props } )
                     ) )
                 }
 
-                <Button type="submit">Submit</Button>
+                <Button
+                    className={ !props.valid && classes.Disabled }
+                    type="submit">Submit</Button>
 
 
 
