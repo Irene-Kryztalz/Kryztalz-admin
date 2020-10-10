@@ -25,8 +25,8 @@ class AppProvider extends Component
 
         if ( !process.env.NODE_ENV || process.env.NODE_ENV === 'development' )
         {
-            base = "http://localhost:8080/admin";
-            loginUrl = "http://localhost:8080/user";
+            base = "http://localhost:7272/admin";
+            loginUrl = "http://localhost:7272/user";
 
         } else
         {

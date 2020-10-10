@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextLike from "./TextLike";
+import Select from "./Select";
+import Textarea from "./Textarea";
+import File from "./File";
 
 function Field ( props )
 {
@@ -9,8 +12,17 @@ function Field ( props )
     {
         case "email":
         case "password":
+        case "number":
             return <TextLike control={ props.control.toLowerCase() } { ...props } />;
 
+        case "select":
+            return <Select options={ props.options } { ...props } />;
+
+        case "textarea":
+            return <Textarea { ...props } />;
+
+        case "file":
+            return <File { ...props } />;
 
         default:
             return <TextLike { ...props } />;
@@ -34,10 +46,10 @@ Field.propTypes =
     valid: PropTypes.bool,
     required: PropTypes.bool,
     validators: PropTypes.arrayOf( PropTypes.func ),
-    options: PropTypes.arrayOf( PropTypes.string ),
+    options: PropTypes.arrayOf( PropTypes.object ),
     classNamesInput: PropTypes.string,
     classNamesLabel: PropTypes.string,
-    classNamesGroup: PropTypes.string
+    classNamesGroup: PropTypes.string,
 
 };
 

@@ -8,11 +8,11 @@ const configureInitState = ( fieldConfig ) =>
     {
         valid: false,
         isSubmitting: false,
-        state: {}
+        state: {},
     };
     const { state } = formState;
 
-    for ( const f in fieldConfig ) 
+    for ( const f in fieldConfig )
     {
 
         if ( fieldConfig[ f ].control === "file" )
@@ -23,7 +23,8 @@ const configureInitState = ( fieldConfig ) =>
                 label: fieldConfig[ f ].label,
                 photos: [],
                 valid: false,
-                validators: fieldConfig[ f ].validators
+                validators: fieldConfig[ f ].validators,
+
             };
         }
         else
@@ -35,7 +36,8 @@ const configureInitState = ( fieldConfig ) =>
                 placeholder: fieldConfig[ f ].placeholder,
                 value: "",
                 valid: false,
-                validators: fieldConfig[ f ].validators
+                validators: fieldConfig[ f ].validators,
+                options: fieldConfig[ f ].options
             };
         }
 
@@ -71,7 +73,7 @@ const configureInitState = ( fieldConfig ) =>
 const checkFormCanSubmit = ( formFieldStates ) =>
 {
     let canSubmit = true;
-    for ( const field of formFieldStates ) 
+    for ( const field of formFieldStates )
     {
         canSubmit = canSubmit && field.valid;
     }
@@ -82,7 +84,7 @@ const reducer = ( state, action ) =>
 {
     let formState = { ...state };
     let field, isValid;
-    switch ( action.type ) 
+    switch ( action.type )
     {
         case "change":
 
@@ -105,7 +107,7 @@ const reducer = ( state, action ) =>
                 field.value = field.value.toLowerCase();
             }
 
-            field.validators.forEach( check => 
+            field.validators.forEach( check =>
             {
                 isValid = isValid && check( field.value );
             } );
@@ -123,21 +125,23 @@ const reducer = ( state, action ) =>
 
             field = formState.state[ action.payload.name ];
             formState.valid = false;
-            const photos = [ ...action.payload.files ];
+            const photos = action.payload.files;
 
             isValid = true && field.validators[ 0 ]( photos.length );
 
             if ( isValid )
             {
-                formState.state[ action.payload.name ] = photos;
+                field.photos = photos;
             }
 
-            field.isValid = isValid;
+            field.valid = isValid;
 
             if ( checkFormCanSubmit( formState.state ) )
             {
                 formState.valid = true;
             }
+
+            console.log( formState );
 
             return formState;
 
@@ -145,17 +149,21 @@ const reducer = ( state, action ) =>
         default:
             return state;
     }
+
+
 };
 
-function useForm ( config ) 
+function useForm ( config )
 {
     const [ formState, dispatch ] = useReducer( reducer, configureInitState( config ) );
 
-    const changeHandler = evt => 
+    const changeHandler = evt =>
     {
+
         const { value, name, type } = evt.target;
         if ( type === "file" )
         {
+
             const files = evt.target.files;
             dispatch(
                 {
