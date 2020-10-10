@@ -7,6 +7,7 @@
         'top-nav'
         'main';
     min-height: 100vh;
+    width: 100vw;
     gap:10px;
 }
 
@@ -23,4 +24,34 @@
 #page
 {
     grid-area: page;
+}
+
+.Toggler
+{
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 2rem;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    background: linear-gradient(180deg, #FF6FCE -2.76%, #89C8EB 100.64%);
+    z-index: calc(6*var(--z));
+    transform: rotate(0);
+    transition: transform 0.2s linear
+}
+
+.Toggler.Open
+{
+    transform: rotate(180deg);
+}
+
+@media screen and (min-width:768px)
+{
+    .Toggler
+    {
+        display: none;
+    }
 }

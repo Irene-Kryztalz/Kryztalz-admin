@@ -157,7 +157,8 @@ class AppProvider extends Component
                     ...this.state,
                     changeCurr: this.changeCurr,
                     login: this.login,
-                    sendData: this.sendData
+                    sendData: this.sendData,
+                    logout: this.logout
                 } }>
                 { this.props.children }
             </AppContext.Provider>
