@@ -33,11 +33,20 @@ function Index ( { isOpen, toggle } )
     return (
         <nav className={ joinClasses( classes.SideMenu, ( isOpen ? classes.Open : null ) ) }>
 
-            <div className={ classes.Logo } >
-                <img src={ logo } alt="Krystalz logo" />
+
+
+            <div onClick={ toggle } className={ classes.Logo } >
+                <NavLink to="/home">
+                    <img src={ logo } alt="Krystalz logo" />
+
+                    <h3>Krystalz</h3>
+                </NavLink>
+
             </div>
 
-            <h3>Krystalz</h3>
+
+
+
 
             <ul className={ classes.Routes }>
                 {
