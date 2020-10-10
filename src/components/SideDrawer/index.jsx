@@ -34,7 +34,6 @@ function Index ( { isOpen, toggle } )
         <nav className={ joinClasses( classes.SideMenu, ( isOpen ? classes.Open : null ) ) }>
 
 
-
             <div onClick={ toggle } className={ classes.Logo } >
                 <NavLink to="/home">
                     <img src={ logo } alt="Krystalz logo" />
@@ -54,9 +53,11 @@ function Index ( { isOpen, toggle } )
                         <li
                             onClick={ toggle }
                             key={ r.path }>
-                            {r.icon }
                             <NavLink
+                                activeClassName={ classes.Active }
                                 to={ r.path } >
+
+                                { r.icon }
                                 { r.text }
                             </NavLink>
                         </li> ) )

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { joinClasses } from "../../utils/joinClasses";
+import { Switch, Route } from "react-router-dom";
+
 import SideDrawer from "../../components/SideDrawer";
+import AddGem from "./AddGem";
+
+import { joinClasses } from "../../utils/joinClasses";
 import classes from "./index.module.css";
 
 function Dashboard ()
@@ -14,7 +18,6 @@ function Dashboard ()
 
     return (
         <div className={ classes.MainAppContainer }>
-            <section id="top-nav">Top Nav</section>
             <button
                 className={ joinClasses( classes.Toggler, isOpen && classes.Open ) }
                 onClick={ toggleOpen }>
@@ -27,7 +30,9 @@ function Dashboard ()
                     isOpen={ isOpen } />
             </aside>
             <section id="page">
-                Dashboard
+                <Switch>
+                    <Route component={ AddGem } />
+                </Switch>
             </section>
         </div>
     );
