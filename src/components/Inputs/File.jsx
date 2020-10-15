@@ -26,7 +26,6 @@ function File ( props )
     {
         e.preventDefault();
         e.stopPropagation();
-        let files = [ ...e.dataTransfer.files ];
 
         const evt =
         {
