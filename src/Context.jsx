@@ -63,7 +63,7 @@ class AppProvider extends Component
         headers =
         {
             ...headers,
-            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-admin-token" ) }`
+            Authorization: `Bearer ${ localStorage.getItem( "token" ) }`
         };
 
         let response,
@@ -121,8 +121,8 @@ class AppProvider extends Component
     {
         const now = new Date().getTime();
 
-        const token = localStorage.getItem( "kryztalz-admin-token" );
-        const expires = +localStorage.getItem( "kryztalz-admin-exp" );
+        const token = localStorage.getItem( "token" );
+        const expires = +localStorage.getItem( "token-exp" );
 
         const diff = ( expires && token ) ? expires - now : 0;
 
@@ -131,16 +131,16 @@ class AppProvider extends Component
 
     login = ( token, expires ) =>
     {
-        localStorage.setItem( 'kryztalz-admin-token', token );
-        localStorage.setItem( 'kryztalz-admin-exp', expires );
+        localStorage.setItem( 'token', token );
+        localStorage.setItem( 'token-exp', expires );
         this.setState( { isAuth: true } );
 
     };
 
     logout = () =>
     {
-        localStorage.removeItem( 'kryztalz-admin-token' );
-        localStorage.removeItem( 'kryztalz-admin-exp' );
+        localStorage.removeItem( 'token' );
+        localStorage.removeItem( 'token-exp' );
         this.setState( { isAuth: false } );
     };
 
