@@ -5,7 +5,7 @@
     left: 0;
     height: 100vh;
     width: 250px;
-    background-color: var(--form-bg);
+    background-color: var(--blue);
     overflow-y: auto;
     overflow-x: hidden;
     z-index: calc(5*var(--z));
@@ -48,7 +48,7 @@
 .Routes li
 {
     text-align: center;
-    margin: 15px 0;
+    margin: 10px 0;
     font-size: 1.2rem;
     
 }
@@ -62,27 +62,16 @@
     text-transform: uppercase;
     letter-spacing: 2px;    
     font-family: 'Revalia', cursive;
+    padding: 10px;
 }
 
-.Routes li a::after
+.Routes li a.Active,
+.Routes li a:hover
 {
-    content: "";
-    position: absolute;
-    width: 100%;
-    left: 0%;
-    bottom: -8px;
-    height: 1px;
-    background-color: var(--purple);
-    transform: translateX(-100%);
-    transition: transform 0.2s linear;
+    background-color: var(--gold);
+    color: var(--blue);
 }
 
-.Routes li a.Active::after,
-.Routes li a:hover::after
-{
-   
-    transform: translateX(0%);
-}
 
 .Logout
 {

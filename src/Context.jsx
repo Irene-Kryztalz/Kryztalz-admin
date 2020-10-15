@@ -14,24 +14,21 @@ class AppProvider extends Component
             currencies: {},
             activeCurr: "",
             isAuth: false,
-            baseUrl: "",
-            loginUrl: ""
+            baseUrl: ""
 
         };
 
     componentDidMount ()
     {
-        let base, loginUrl;
+        let base;
 
         if ( !process.env.NODE_ENV || process.env.NODE_ENV === 'development' )
         {
-            base = "http://localhost:8080/admin";
-            loginUrl = "http://localhost:8080/user";
+            base = "http://localhost:7272";
 
         } else
         {
             base = process.env.REACT_APP_SERVER;
-            loginUrl = process.env.REACT_APP_AUTH_SERVER;
         }
         if ( !this.state.currencies[ "ngn" ] )
         {
@@ -43,7 +40,6 @@ class AppProvider extends Component
                         {
                             activeCurr: "ngn",
                             baseUrl: base,
-                            loginUrl,
                             currencies: this.formatData( curr )
                         }
                     );
@@ -61,17 +57,17 @@ class AppProvider extends Component
         this.setState( { activeCurr: curr } );
     };
 
-    sendData = async ( { endpoint, formData, method = "GET", headers, forAuth = false } ) =>
+    sendData = async ( { endpoint, formData, method = "GET", headers, } ) =>
     {
         this.setState( { loading: true } );
+        headers =
+        {
+            ...headers,
+            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-admin-token" ) }`
+        };
 
         let response,
             url = this.state.baseUrl;
-
-        if ( forAuth ) 
-        {
-            url = this.state.loginUrl;
-        }
 
         if ( method === "GET" )
         {

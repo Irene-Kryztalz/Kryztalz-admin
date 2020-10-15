@@ -23,15 +23,15 @@ function Dashboard ()
                 onClick={ toggleOpen }>
                 &#x21D0;
             </button>
-            <aside id="side-nav">
+            <aside >
                 <SideDrawer
 
                     toggle={ toggleOpen }
                     isOpen={ isOpen } />
             </aside>
-            <section id="page">
+            <section >
                 <Switch>
-                    <Route component={ AddGem } />
+                    <Route path="/add-gem" component={ AddGem } />
                 </Switch>
             </section>
         </div>

@@ -1,0 +1,120 @@
+.Title
+{
+    color:var(--gold);
+    margin: 12px 10px;
+    font-size: 2rem;
+    font-family: 'Revalia', cursive;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.Title::after
+{
+    content: "";
+    background-color: var(--purple);
+    position: absolute;
+    height: 2px;
+    width: 180px;
+    bottom: 0%;
+    left: 0;
+}
+
+.FormContainer
+{
+    background-color: var(--form-bg);
+    padding: 10px;
+}
+
+.FormGroup,
+.FormLabel,
+.FormInput
+{
+    display: block;
+}
+
+.FormLabel
+{
+   font-family: 'Crimson Pro', serif;
+    color:var(--gold);
+    text-transform: capitalize;
+    font-size: 1.4rem;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+.FormInput
+{
+    outline: none;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    border: 3px solid transparent;
+    font-size: 1.15rem;
+    transition: border-color 0.1s linear,
+                box-shadow 0.2s linear;
+}
+
+.FormInput:focus
+{
+    border-color: var(--gold);
+    box-shadow: 3px 4px 8px 0px var(--blue);
+}
+
+select.FormInput
+{
+    text-transform: capitalize;
+    caret-color: var(--gold);
+}
+
+.DragDrop label:nth-child(2)
+{
+    display: block;
+    background-color: #ccc;
+    border: 2px dashed green;
+    position: relative;
+    height: 120px;
+    margin: 10px 0;
+}
+
+.DragDrop label:nth-child(2)::before
+{
+    content: "Drag and drop files here...";
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    font-size: 1.3rem;
+}
+
+.Disabled
+{
+    cursor: not-allowed;
+    transition: none !important;    
+    transform: none !important;
+    opacity: 0.7;
+    background-color: #ccc !important;
+    pointer-events: none;
+    
+}
+
+
+@media screen and (min-width:768px)
+{
+    .FormContainer
+    {
+        background-color: transparent;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 20px;
+        width: 80%;
+    }
+
+    .ExtraGroupClass
+    {
+      grid-column: span 2;
+    }
+
+
+
+}

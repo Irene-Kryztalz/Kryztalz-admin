@@ -9,8 +9,9 @@
 .FormWrap
 {
     padding:10px  20px   ; 
-    justify-items: center;       
+    justify-content: center;       
     align-items: center;
+    min-height: 100vh;
 }
 
 .Logo
@@ -45,6 +46,7 @@
     text-transform: capitalize;
     font-size: 1.4rem;
     margin: 10px auto;
+    cursor: pointer;
 }
 
 .Input

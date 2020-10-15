@@ -23,4 +23,6 @@ export const email = value =>
         value.trim()
     );
 
+export const price = value => value > 0;
+
 export const fileCount = value => value < 5 && value > 0;    

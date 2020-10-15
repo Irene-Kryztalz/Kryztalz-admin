@@ -1,13 +1,13 @@
 import React from 'react';
 import { AppProvider } from "./Context";
-import SignIn from "./pages/SignIn";
+import Index from "./pages/Index";
 import "./App.css";
 
 function App ()
 {
   return (
     <AppProvider>
-      <SignIn />
+      <Index />
     </AppProvider>
   );
 }

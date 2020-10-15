@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import useForm from "../hooks/useForm";
 import AppContext from "../Context";
-import Dashboard from "./Dashboard";
 import Auth from "../components/Auth/Auth";
-import Main from "../components/Main";
 import { extractFormData } from "../utils/extractFormData";
 import
 {
@@ -37,7 +35,7 @@ const config =
 function SignIn () 
 {
     const [ formState, changeHandler ] = useForm( config );
-    const { login, sendData, isAuth } = useContext( AppContext );
+    const { login, sendData } = useContext( AppContext );
 
 
     const handleSubmit = async ( ev ) =>
@@ -48,7 +46,7 @@ function SignIn ()
         const response = await sendData(
             {
                 forAuth: true,
-                endpoint: "signin",
+                endpoint: "user/signin",
                 formData: JSON.stringify( formData ),
                 method: "post",
                 headers:
@@ -74,19 +72,14 @@ function SignIn ()
 
 
     return (
-        <Main>
-            {
-                isAuth ? < Dashboard /> : <Auth
-                    to="sign-up"
-                    submitText="sign in"
-                    valid={ formState.valid }
-                    handleSubmit={ handleSubmit }
-                    changeHandler={ changeHandler }
-                    fields={ [ ...formState.state ] } />
-            }
+        <Auth
+            to="sign-up"
+            submitText="sign in"
+            valid={ formState.valid }
+            handleSubmit={ handleSubmit }
+            changeHandler={ changeHandler }
+            fields={ [ ...formState.state ] } />
 
-
-        </Main>
 
     );
 }
