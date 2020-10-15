@@ -98,7 +98,7 @@ function AddGem ()
 
         const resp = await sendData(
             {
-                endpoint: "gems",
+                endpoint: "admin/gems",
                 method: "POST",
                 formData,
             } );
