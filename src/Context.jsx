@@ -9,12 +9,12 @@ class AppProvider extends Component
     state =
         {
             gems: [],
-            users: [],
             loading: false,
             currencies: {},
             activeCurr: "",
             isAuth: false,
-            baseUrl: ""
+            baseUrl: "",
+            permissions: []
 
         };
 
@@ -48,16 +48,52 @@ class AppProvider extends Component
         if ( this.checkExpiredToken() )
         {
             this.setState( { isAuth: true } );
+            this.getPerms( base );
         }
 
     }
+
+    getPerms = async ( baseUrl ) =>
+    {
+        const token = localStorage.getItem( "token" );
+        fetch( `${ baseUrl }/admin/permissions`,
+            {
+                headers:
+                {
+                    Authorization: `Bearer ${ token }`
+                }
+            } )
+            .then( res => res.json() )
+            .then( perms => 
+            {
+                const permissions = [];
+
+                for ( const perm in perms ) 
+                {
+                    const p =
+                    {
+                        name: perm.replace( /_/ig, " " ),
+                        slug: perm,
+                        id: perms[ perm ]
+                    };
+
+                    permissions.push( p );
+                }
+
+                this.setState( { permissions } );
+            } )
+            .catch( e => 
+            {
+                this.setState( { permissions: { error: e.error } } );
+            } );
+    };
 
     changeCurr = ( curr ) =>
     {
         this.setState( { activeCurr: curr } );
     };
 
-    sendData = async ( { endpoint, formData, method = "GET", headers, } ) =>
+    sendData = async ( { endpoint, formData, method = "GET", headers } ) =>
     {
         this.setState( { loading: true } );
         headers =
@@ -71,7 +107,10 @@ class AppProvider extends Component
 
         if ( method === "GET" )
         {
-            response = await fetch( `${ url }/${ endpoint }` );
+            response = await fetch( `${ url }/${ endpoint }`,
+                {
+                    headers
+                } );
         }
         else
         {
@@ -116,16 +155,12 @@ class AppProvider extends Component
         return formatted;
     };
 
-
     checkExpiredToken = () =>
     {
         const now = new Date().getTime();
-
         const token = localStorage.getItem( "token" );
         const expires = +localStorage.getItem( "token-exp" );
-
         const diff = ( expires && token ) ? expires - now : 0;
-
         return diff > 0 ? true : false;
     };
 
@@ -143,7 +178,6 @@ class AppProvider extends Component
         localStorage.removeItem( 'token-exp' );
         this.setState( { isAuth: false } );
     };
-
 
     render ()
     {
