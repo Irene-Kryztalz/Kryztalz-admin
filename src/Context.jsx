@@ -105,38 +105,55 @@ class AppProvider extends Component
         let response,
             url = this.state.baseUrl;
 
-        if ( method === "GET" )
-        {
-            response = await fetch( `${ url }/${ endpoint }`,
-                {
-                    headers
-                } );
-        }
-        else
-        {
-            response = await fetch( `${ url }/${ endpoint }`,
-                {
-                    method,
-                    headers,
-                    body: formData
-                } );
-        }
-
-
-        if ( response.ok )
-        {
-            this.setState( { loading: false } );
-            return { data: await response.json() };
-        }
-        else
+        try 
         {
 
-            this.setState( { loading: false } );
+            if ( method === "GET" || method === "DELETE" )
+            {
+                response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
+                    {
+                        headers
+                    } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
+                        , 10000 ) ) ] );
+            }
+            else
+            {
+                response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
+                    {
+                        method,
+                        headers,
+                        body: formData
+                    } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
+                        , 10000 ) ) ] );
+            }
+
+            if ( response.ok )
+            {
+                this.setState( { loading: false } );
+                return { data: await response.json() };
+            }
+            else
+            {
+
+                this.setState( { loading: false } );
+                return {
+                    code: response.status,
+                    error: await response.json()
+                };
+            }
+
+        }
+        catch ( err )
+        {
+            //handle error like server is offline
+            //no network
+            //or request timeout
             return {
-                code: response.status,
-                error: await response.json()
+                error: err.message
             };
+
         }
+
 
     };
 

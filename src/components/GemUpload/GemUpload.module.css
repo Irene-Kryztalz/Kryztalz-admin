@@ -1,24 +1,3 @@
-.Title
-{
-    color:var(--gold);
-    margin: 12px 10px;
-    font-size: 2rem;
-    font-family: 'Revalia', cursive;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.Title::after
-{
-    content: "";
-    background-color: var(--purple);
-    position: absolute;
-    height: 2px;
-    width: 180px;
-    bottom: 0%;
-    left: 0;
-}
-
 .FormContainer
 {
     background-color: var(--form-bg);
@@ -87,6 +66,12 @@ select.FormInput
     font-size: 1.3rem;
 }
 
+label.ActiveDropZone
+{
+   background-color: yellow !important;
+}
+
+
 .Disabled
 {
     cursor: not-allowed;
@@ -96,6 +81,12 @@ select.FormInput
     background-color: #ccc !important;
     pointer-events: none;
     
+}
+
+button:active,
+button:focus
+{
+    box-shadow: 3px 4px 8px 0px var(--blue);
 }
 
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Field from "../Inputs/Field";
 import Button from "../Button";
+import Title from "../Title";
 import classes from './GemUpload.module.css';
 
 function GemUpload ( { fields, ...props } ) 
@@ -8,7 +9,7 @@ function GemUpload ( { fields, ...props } )
     return (
         <>
 
-            <h3 className={ classes.Title }>{ props.title }</h3>
+            <Title>{ props.title }</Title>
             <form
                 className={ classes.FormContainer }
                 encType="multipart/form-data"
@@ -23,6 +24,7 @@ function GemUpload ( { fields, ...props } )
                             classNamesInput={ classes.FormInput }
                             classNamesLabel={ classes.FormLabel }
                             ExtraGroupClass={ classes.ExtraGroupClass }
+                            FocusDropZone={ classes.ActiveDropZone }
                             DragDrop={ field.control === "file" && classes.DragDrop }
                             name={ field.fieldName }
                             { ...field }

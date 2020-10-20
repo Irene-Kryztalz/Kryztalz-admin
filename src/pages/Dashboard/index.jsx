@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import SideDrawer from "../../components/SideDrawer";
 import AddGem from "./AddGem";
+import EditUser from "./EditUser/EditUser";
 
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./index.module.css";
@@ -32,6 +33,7 @@ function Dashboard ()
             <section >
                 <Switch>
                     <Route path="/add-gem" component={ AddGem } />
+                    <Route path="/edit-permissions" component={ EditUser } />
                 </Switch>
             </section>
         </div>

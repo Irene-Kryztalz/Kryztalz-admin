@@ -4,7 +4,17 @@ import { joinClasses } from "../../utils/joinClasses";
 function File ( props ) 
 {
     const input = useRef();
+    const divWrap = useRef();
 
+    const addClasses = () =>
+    {
+        divWrap.current.classList.add( props.FocusDropZone );
+    };
+
+    const handleBlur = () =>
+    {
+        divWrap.current.classList.remove( props.FocusDropZone );
+    };
 
     const handleDragEnter = e =>
     {
@@ -18,6 +28,7 @@ function File ( props )
     };
     const handleDragOver = e =>
     {
+        divWrap.current.classList.add( props.FocusDropZone );
         e.preventDefault();
         e.stopPropagation();
         e.dataTransfer.dropEffect = 'copy';
@@ -40,6 +51,7 @@ function File ( props )
 
         props.changeHandler( evt );
         input.current.files = e.dataTransfer.files;
+        handleBlur();
 
     };
 
@@ -54,14 +66,18 @@ function File ( props )
                 onDragOver={ handleDragOver }
                 onDragEnter={ handleDragEnter }
                 onDragLeave={ handleDragLeave }
+                ref={ divWrap }
             >
 
                 <input
                     ref={ input }
+                    accept="image/*"
                     onChange={ props.changeHandler }
                     multiple
                     type="file"
                     name={ props.name }
+                    onFocus={ addClasses }
+                    onBlur={ handleBlur }
                     id={ props.name } />
 
             </label>
