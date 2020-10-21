@@ -1,0 +1,60 @@
+.Group
+{
+    margin: 10px;
+    border:  1px solid var(--gold);
+    padding: 10px 20px;    
+    font-family: 'Crimson Pro', serif;
+}
+
+.Label
+{
+    font-size: 1.2rem;
+    display: block;
+    color: var(--gold)
+}
+
+.Input
+{
+    font-size: 1.2rem;
+    display: block;
+    padding: 5px;
+    margin: 10px 0;
+    max-width: 100%;
+}
+
+.User
+{
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap:20px;
+}
+
+
+@media screen and (min-width:500px)
+{
+    .User
+    {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media screen and (min-width:900px)
+{
+    .Group
+    {
+        width: 80%;
+        max-width: 600px;
+    }
+    
+    .Input
+    {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    .User
+    {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}

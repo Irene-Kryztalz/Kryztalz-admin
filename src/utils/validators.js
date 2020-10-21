@@ -30,6 +30,6 @@ export const fileCount = value => value < 5 && value > 0;
 export const isImage = files =>
 {
     //check file extesion
-    const allowedImages = [ "png", "webp", "jpg", "svg", "jpeg", "gif", "ico" ];
+    //  const allowedImages = [ "png", "webp", "jpg", "svg", "jpeg", "gif", "ico" ];
 
 };

@@ -1,0 +1,59 @@
+.Card
+{
+    background-color: var(--blue);
+    color: var(--gold);
+    position: relative;
+    padding: 10px 20px;
+}
+
+.Card::after
+{
+    content:" ";
+    z-index: -1;
+    position: absolute;
+    left: -5%;
+    top:-5%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--gold);
+    opacity: 0.5;
+}
+
+.Text
+{
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.Name
+{
+    text-transform: capitalize;
+}
+
+
+.Toggle
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.Toggle button
+{
+    margin: 5px 0 !important
+}
+
+@media screen and (min-width:500px)
+{
+
+    .List
+    {
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+}

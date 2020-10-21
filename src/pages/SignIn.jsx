@@ -45,7 +45,6 @@ function SignIn ()
 
         const response = await sendData(
             {
-                forAuth: true,
                 endpoint: "user/signin",
                 formData: JSON.stringify( formData ),
                 method: "post",

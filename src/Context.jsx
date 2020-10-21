@@ -55,7 +55,7 @@ class AppProvider extends Component
 
     getPerms = async ( baseUrl ) =>
     {
-        const token = localStorage.getItem( "token" );
+        const token = localStorage.getItem( "kryztalz-token" );
         fetch( `${ baseUrl }/admin/permissions`,
             {
                 headers:
@@ -99,7 +99,7 @@ class AppProvider extends Component
         headers =
         {
             ...headers,
-            Authorization: `Bearer ${ localStorage.getItem( "token" ) }`
+            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-token" ) }`
         };
 
         let response,
@@ -145,6 +145,7 @@ class AppProvider extends Component
         }
         catch ( err )
         {
+            this.setState( { loading: false } );
             //handle error like server is offline
             //no network
             //or request timeout
@@ -175,24 +176,24 @@ class AppProvider extends Component
     checkExpiredToken = () =>
     {
         const now = new Date().getTime();
-        const token = localStorage.getItem( "token" );
-        const expires = +localStorage.getItem( "token-exp" );
+        const token = localStorage.getItem( "kryztalz-token" );
+        const expires = +localStorage.getItem( "kryztalz-token-exp" );
         const diff = ( expires && token ) ? expires - now : 0;
         return diff > 0 ? true : false;
     };
 
     login = ( token, expires ) =>
     {
-        localStorage.setItem( 'token', token );
-        localStorage.setItem( 'token-exp', expires );
+        localStorage.setItem( 'kryztalz-token', token );
+        localStorage.setItem( 'kryztalz-token-exp', expires );
         this.setState( { isAuth: true } );
 
     };
 
     logout = () =>
     {
-        localStorage.removeItem( 'token' );
-        localStorage.removeItem( 'token-exp' );
+        localStorage.removeItem( 'kryztalz-token' );
+        localStorage.removeItem( 'kryztalz-token-exp' );
         this.setState( { isAuth: false } );
     };
 

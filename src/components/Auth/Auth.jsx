@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Field from "../Inputs/Field";
@@ -26,9 +26,10 @@ function Auth ( { fields, ...props } )
                             changeHandler={ props.changeHandler }
                             shouldAutoFocus={ i === 0 }
                             classNamesGroup={ classes.Group }
-                            classNamesInput={ joinClasses( classes.Input ) }
+                            classNamesInput={ classes.Input }
                             classNamesLabel={ classes.Label }
                             name={ field.fieldName }
+                            label={ field.label }
                             { ...field }
                         />
                     ) )

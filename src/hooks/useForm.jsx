@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useReducer } from 'react';
 import { flattenFormFields } from "../utils/flattenFormFields";
 
@@ -15,30 +14,59 @@ const configureInitState = ( fieldConfig ) =>
     for ( const f in fieldConfig )
     {
 
-        if ( fieldConfig[ f ].control === "file" )
+        switch ( fieldConfig[ f ].control ) 
         {
-            state[ f ] =
-            {
-                control: fieldConfig[ f ].control,
-                label: fieldConfig[ f ].label,
-                photos: [],
-                valid: false,
-                validators: fieldConfig[ f ].validators,
+            case "file":
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: false,
+                    photos: [],
+                    validators: fieldConfig[ f ].validators,
 
-            };
-        }
-        else
-        {
-            state[ f ] =
-            {
-                control: fieldConfig[ f ].control,
-                label: fieldConfig[ f ].label,
-                placeholder: fieldConfig[ f ].placeholder,
-                value: "",
-                valid: false,
-                validators: fieldConfig[ f ].validators,
-                options: fieldConfig[ f ].options
-            };
+                };
+
+                break;
+
+            case "checkbox":
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: false
+                };
+
+                state[ f ].value = [];
+                state[ f ].options = [];
+
+                fieldConfig[ f ].options.forEach( ( opt, i ) =>
+                {
+                    const option =
+                    {
+                        name: `${ f }-${ opt.name }`,
+                        text: opt.name,
+                        checked: false,
+                        value: opt.val,
+                        field: f
+                    };
+
+                    state[ f ].options.push( option );
+                } );
+
+                break;
+
+            default:
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: false,
+                    placeholder: fieldConfig[ f ].placeholder,
+                    value: "",
+                    validators: fieldConfig[ f ].validators
+                };
+                break;
         }
 
     };
@@ -94,14 +122,6 @@ const reducer = ( state, action ) =>
             field.value = action.payload.value;
             isValid = true;
 
-            const pwd = formState.state.password ? formState.state.password.value.trim() : null;
-            const confirmPwd = formState.state.confirmPassword ? formState.state.confirmPassword.value.trim() : null;
-
-            if ( pwd && confirmPwd )
-            {
-                isValid = isValid && ( pwd === confirmPwd );
-            }
-
             if ( field.control === "email" )
             {
                 field.value = field.value.toLowerCase();
@@ -145,6 +165,27 @@ const reducer = ( state, action ) =>
 
             return formState;
 
+        case "checked":
+
+            field = formState.state[ action.payload.field ];
+            const optIndex = field.options.findIndex( o => o.name === action.payload.name );
+
+            const values = [ ...new Set( [ ...field.value, action.payload.value ] ) ];
+
+            field.value = values;
+            field.options[ optIndex ].checked = true;
+
+            return formState;
+
+        case "checked-off":
+
+            field = formState.state[ action.payload.field ];
+            const optInd = field.options.findIndex( o => o.name === action.payload.name );
+
+            field.options[ optInd ].checked = false;
+
+            field.value = field.value.filter( v => v !== action.payload.value );
+            return formState;
 
         default:
             return state;
@@ -176,6 +217,37 @@ function useForm ( config )
                     }
                 } );
 
+        }
+        else if ( type === "checkbox" )
+        {
+            if ( evt.target.checked )
+            {
+                dispatch(
+                    {
+                        type: "checked",
+                        payload:
+                        {
+                            name,
+                            value,
+                            field: evt.target.dataset.field
+                        }
+                    } );
+
+            }
+            else
+            {
+                dispatch(
+                    {
+                        type: "checked-off",
+                        payload:
+                        {
+                            name,
+                            value,
+                            field: evt.target.dataset.field
+                        }
+                    } );
+
+            }
         }
         else
         {

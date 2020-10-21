@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextLike from "./TextLike";
 import Select from "./Select";
 import Textarea from "./Textarea";
+import Checkbox from "./Checkbox";
 import File from "./File";
 
 function Field ( props )
@@ -23,6 +24,9 @@ function Field ( props )
 
         case "file":
             return <File { ...props } />;
+
+        case "checkbox":
+            return <Checkbox { ...props } />;
 
         default:
             return <TextLike { ...props } />;
