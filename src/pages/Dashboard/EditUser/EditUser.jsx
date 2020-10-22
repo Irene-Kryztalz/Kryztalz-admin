@@ -8,6 +8,7 @@ import Title from "../../../components/Title";
 import UserCard from "../../../components/UserCard/UserCard";
 import PermForm from "../../../components/PermForm/PermForm";
 
+import { PageError } from "../../../components/Errors/Errors";
 
 import classes from './EditUser.module.css';
 
@@ -95,8 +96,7 @@ function EditUser ()
                 {
                     type: "search",
                     payload: email
-                }
-            );
+                } );
 
             const response = await sendData(
                 {
@@ -117,17 +117,15 @@ function EditUser ()
                         {
                             type: "setError",
                             payload: response.error.error
-                        }
-                    );
+                        } );
                 }
                 else
                 {
                     dispatch(
                         {
-                            type: "setErr",
+                            type: "setError",
                             payload: response.error
-                        }
-                    );
+                        } );
                 }
 
             }
@@ -193,45 +191,67 @@ function EditUser ()
 
     const handleSubmit = async ( perms ) =>
     {
-        const payload =
+        if ( perms.length > 0 )
         {
-            id: state.user._id,
-            perms
-        };
-
-        let endpoint = "admin/add-permission";
-
-        if ( state.mode === "remove" )
-        {
-            endpoint = "admin/remove-permission";
-        }
-
-        const response = await sendData(
+            const payload =
             {
-                endpoint,
-                formData: JSON.stringify( payload ),
-                method: "PUT",
-                headers:
-                {
-                    "Content-Type": "application/json"
-                }
-            } );
+                id: state.user._id,
+                perms
+            };
 
-        if ( response.error )
-        {
-            console.log( response );
-        }
-        else
-        {
-            const user = response.data;
-            dispatch(
+            let endpoint = "admin/add-permission";
+
+            if ( state.mode === "remove" )
+            {
+                endpoint = "admin/remove-permission";
+            }
+
+            const response = await sendData(
                 {
-                    type: "setUser",
-                    payload: user
+                    endpoint,
+                    formData: JSON.stringify( payload ),
+                    method: "PUT",
+                    headers:
+                    {
+                        "Content-Type": "application/json"
+                    }
                 } );
-            genPerms( user.roleId );
-            setShowForm( false );
+
+            if ( response.error )
+            {
+                if ( typeof response.error === "object" )
+                {
+                    dispatch(
+                        {
+                            type: "setError",
+                            payload: response.error.error
+                        } );
+                }
+                else
+                {
+                    dispatch(
+                        {
+                            type: "setError",
+                            payload: response.error
+                        } );
+                }
+
+            }
+            else
+            {
+                const user = response.data;
+                dispatch(
+                    {
+                        type: "setUser",
+                        payload: user
+                    } );
+                genPerms( user.roleId );
+                setShowForm( false );
+            }
+            return;
         }
+
+        setShowForm( false );
 
     };
 
@@ -263,8 +283,7 @@ function EditUser ()
                 {
                     type: "setMode",
                     payload: "add"
-                }
-            );
+                } );
         }
         else if ( mode === "remove" )
         {
@@ -319,11 +338,13 @@ function EditUser ()
                 state.show && (
                     state.error
                         ?
-                        <h1>{ state.error }</h1>
+                        <PageError message={ state.error } />
                         :
                         <section className={ classes.User }>
                             <UserCard
                                 setMode={ setMode }
+                                allowedLen={ state.allowedPerms.length }
+                                nAllowedLen={ state.notAllowedPerms.length }
                                 allowed={ state.allowedPerms }
                                 user={ state.user } />
 
@@ -333,6 +354,9 @@ function EditUser ()
                                     <PermForm
                                         submitHandler={ handleSubmit }
                                         config={ config }
+                                        mode={ state.mode }
+                                        size={ state.notAllowedPerms.length }
+                                        setMode={ setMode }
                                     />
                                 }
 
@@ -341,6 +365,9 @@ function EditUser ()
                                     <PermForm
                                         submitHandler={ handleSubmit }
                                         config={ config }
+                                        mode={ state.mode }
+                                        size={ state.allowedPerms.length }
+                                        setMode={ setMode }
                                     />
                                 }
                             </div>
@@ -351,7 +378,6 @@ function EditUser ()
 
                 )
             }
-
 
 
         </>

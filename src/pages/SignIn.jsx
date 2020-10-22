@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import useForm from "../hooks/useForm";
 import AppContext from "../Context";
 import Auth from "../components/Auth/Auth";
@@ -19,6 +19,7 @@ const config =
         label: "Email address",
         placeholder: "Input email...",
         control: "email",
+        message: "Please type in a valid email",
         validators: [ required, email ]
 
     },
@@ -27,6 +28,7 @@ const config =
         label: "Password",
         placeholder: "Enter password...",
         control: "password",
+        message: "Invalid password. Password is case sensitive and must contain at least 8 alphanumeric characters",
         validators: [ required, length( { min: 8 } ), alphaNumeric ]
     }
 
@@ -35,11 +37,13 @@ const config =
 function SignIn () 
 {
     const [ formState, changeHandler ] = useForm( config );
+    const [ error, setError ] = useState( "" );
     const { login, sendData } = useContext( AppContext );
 
 
     const handleSubmit = async ( ev ) =>
     {
+        setError( null );
         ev.preventDefault();
         const formData = extractFormData( formState.state );
 
@@ -56,7 +60,15 @@ function SignIn ()
 
         if ( response.error )
         {
-            console.log( response );
+            if ( typeof response.error === "object" )
+            {
+                setError( response.error.error );
+            }
+            else
+            {
+                setError( response.error );
+            }
+
         }
         else
         {
@@ -65,13 +77,11 @@ function SignIn ()
             console.log( response.data.user );
         }
 
-
-
     };
-
 
     return (
         <Auth
+            error={ error }
             to="sign-up"
             submitText="sign in"
             valid={ formState.valid }

@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { joinClasses } from "../../utils/joinClasses";
+import { InputError } from "../Errors/Errors";
 
 function File ( props ) 
 {
@@ -81,6 +82,8 @@ function File ( props )
                     id={ props.name } />
 
             </label>
+
+            {props.touched && !props.valid && <InputError message={ props.message } /> }
         </div>
 
     );

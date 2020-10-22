@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { flattenFormFields } from "../utils/flattenFormFields";
 
-const configureInitState = ( fieldConfig ) =>
+const configureInitState = ( fieldConfig, isEdit ) =>
 {
     const formState =
     {
@@ -21,7 +21,7 @@ const configureInitState = ( fieldConfig ) =>
                 {
                     control: fieldConfig[ f ].control,
                     label: fieldConfig[ f ].label,
-                    valid: false,
+                    valid: isEdit,
                     photos: [],
                     validators: fieldConfig[ f ].validators,
 
@@ -34,7 +34,7 @@ const configureInitState = ( fieldConfig ) =>
                 {
                     control: fieldConfig[ f ].control,
                     label: fieldConfig[ f ].label,
-                    valid: false
+                    valid: isEdit,
                 };
 
                 state[ f ].value = [];
@@ -56,12 +56,25 @@ const configureInitState = ( fieldConfig ) =>
 
                 break;
 
+            case "select":
+                state[ f ] =
+                {
+                    options: fieldConfig[ f ].options,
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: isEdit,
+                    placeholder: fieldConfig[ f ].placeholder,
+                    value: "",
+                    validators: fieldConfig[ f ].validators
+                };
+                break;
+
             default:
                 state[ f ] =
                 {
                     control: fieldConfig[ f ].control,
                     label: fieldConfig[ f ].label,
-                    valid: false,
+                    valid: isEdit,
                     placeholder: fieldConfig[ f ].placeholder,
                     value: "",
                     validators: fieldConfig[ f ].validators
@@ -69,7 +82,11 @@ const configureInitState = ( fieldConfig ) =>
                 break;
         }
 
-    };
+        state[ f ].touched = false;
+        state[ f ].message = fieldConfig[ f ].message;
+
+    }
+
 
     //so that i can apply some array methods to objects
     state[ Symbol.iterator ] = function ()
@@ -118,7 +135,7 @@ const reducer = ( state, action ) =>
 
             field = formState.state[ action.payload.name ];
             formState.valid = false;
-
+            field.touched = true;
             field.value = action.payload.value;
             isValid = true;
 
@@ -142,12 +159,17 @@ const reducer = ( state, action ) =>
             return formState;
 
         case "file-change":
-
             field = formState.state[ action.payload.name ];
             formState.valid = false;
+            field.touched = true;
             const photos = action.payload.files;
 
-            isValid = true && field.validators[ 0 ]( photos.length );
+            isValid = true;
+
+            field.validators.forEach( check =>
+            {
+                isValid = isValid && check( [ ...photos ] );
+            } );
 
             if ( isValid )
             {
@@ -160,8 +182,6 @@ const reducer = ( state, action ) =>
             {
                 formState.valid = true;
             }
-
-            console.log( formState );
 
             return formState;
 
@@ -187,24 +207,25 @@ const reducer = ( state, action ) =>
             field.value = field.value.filter( v => v !== action.payload.value );
             return formState;
 
+        case "reset":
+            formState = configureInitState( action.payload );
+            return formState;
+
         default:
             return state;
     }
 
-
 };
 
-function useForm ( config )
+function useForm ( config, isEdit = false )
 {
-    const [ formState, dispatch ] = useReducer( reducer, configureInitState( config ) );
+    const [ formState, dispatch ] = useReducer( reducer, configureInitState( config, isEdit ) );
 
     const changeHandler = evt =>
     {
-
         const { value, name, type } = evt.target;
         if ( type === "file" )
         {
-
             const files = evt.target.files;
             dispatch(
                 {
@@ -212,8 +233,7 @@ function useForm ( config )
                     payload:
                     {
                         name,
-                        files,
-
+                        files
                     }
                 } );
 
@@ -264,7 +284,12 @@ function useForm ( config )
         }
     };
 
-    return [ formState, changeHandler ];
+    const reset = () =>
+    {
+        dispatch( { type: "reset", payload: config } );
+    };
+
+    return [ formState, changeHandler, reset ];
 }
 
 export default useForm;

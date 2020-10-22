@@ -7,12 +7,18 @@ import { joinClasses } from "../../utils/joinClasses";
 import classes from "./Auth.module.css";
 import logo from "../../assets/images/logo-large.svg";
 
+import { PageError } from "../Errors/Errors";
+
 
 function Auth ( { fields, ...props } ) 
 {
 
     return (
         <div className={ classes.FormWrap }>
+
+            {
+                props.error && <PageError message={ props.error } />
+            }
 
             <form onSubmit={ props.handleSubmit } method="post">
                 <div className={ classes.Logo }>

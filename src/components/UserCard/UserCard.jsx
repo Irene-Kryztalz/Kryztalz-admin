@@ -5,7 +5,7 @@ import Title from "../Title";
 import CheckboxSwitch from "../CheckboxSwitch/CheckboxSwitch";
 import Button from "../Button";
 
-function UserCard ( { user, allowed, setMode } ) 
+function UserCard ( { user, allowed, setMode, allowedLen, nAllowedLen } ) 
 {
     return (
         <div className={ classes.Card }>
@@ -38,13 +38,19 @@ function UserCard ( { user, allowed, setMode } )
             </div>
 
             <div className={ classes.Toggle }>
-                <Button
-                    onClick={ () => setMode( "add" ) }>Add Permission</Button>
-                <Button
-                    color="var(--gold)"
-                    bg="#000"
-                    onClick={ () => setMode( "remove" ) }
-                >Remove Permission</Button>
+                {
+                    nAllowedLen > 0 && <Button
+                        onClick={ () => setMode( "add" ) }>Add Permission</Button>
+                }
+                {
+                    allowedLen > 0 && <Button
+                        color="var(--gold)"
+                        bg="#000"
+                        onClick={ () => setMode( "remove" ) }
+                    >Remove Permission</Button>
+                }
+
+
             </div>
 
 

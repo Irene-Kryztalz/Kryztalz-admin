@@ -1,5 +1,6 @@
 import React from 'react';
 import { joinClasses } from "../../utils/joinClasses";
+import { InputError } from "../Errors/Errors";
 
 function Textarea ( props )
 {
@@ -13,6 +14,8 @@ function Textarea ( props )
                 name={ props.name }
                 id={ props.name }
                 rows="5"></textarea>
+
+            {props.touched && !props.valid && <InputError message={ props.message } /> }
 
         </div>
     );

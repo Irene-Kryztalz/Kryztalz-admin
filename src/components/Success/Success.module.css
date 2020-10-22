@@ -1,0 +1,10 @@
+.PageSuccess
+{
+    background-color: var(--blue);
+    color: var(--gold);
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+    margin: 10px auto;
+    border-radius: 10px;
+}

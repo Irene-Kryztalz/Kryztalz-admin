@@ -25,11 +25,33 @@ export const email = value =>
 
 export const price = value => value > 0;
 
-export const fileCount = value => value < 5 && value > 0;
+export const fileCount = config => files =>
+{
+    let isValid = true;
+    if ( config.min )
+    {
+        isValid = isValid && files.length >= config.min;
+    }
+    if ( config.max )
+    {
+        isValid = isValid && files.length <= config.max;
+    }
+    return isValid;
+};
 
 export const isImage = files =>
 {
+    let isValid = true;
     //check file extesion
-    //  const allowedImages = [ "png", "webp", "jpg", "svg", "jpeg", "gif", "ico" ];
+    const allowedImages = [ "png", "webp", "jpg", "svg", "jpeg", "gif", "ico" ];
+
+    files.forEach( file => 
+    {
+        const indexOfDot = file.name.lastIndexOf( "." );
+        const ext = file.name.substr( indexOfDot + 1 ).toLowerCase();
+        isValid = isValid && allowedImages.includes( ext );
+    } );
+
+    return isValid;
 
 };

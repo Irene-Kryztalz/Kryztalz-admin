@@ -54,6 +54,7 @@ select.FormInput
     position: relative;
     height: 120px;
     margin: 10px 0;
+   cursor: pointer;
 }
 
 .DragDrop label:nth-child(2)::before

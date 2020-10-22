@@ -4,16 +4,23 @@ import Button from "../Button";
 import Title from "../Title";
 import classes from './GemUpload.module.css';
 
+import { PageError } from "../Errors/Errors";
+
 function GemUpload ( { fields, ...props } ) 
 {
     return (
         <>
-
             <Title>{ props.title }</Title>
+            {
+                props.error && <PageError message={ props.error } />
+
+            }
             <form
                 className={ classes.FormContainer }
                 encType="multipart/form-data"
                 onSubmit={ props.handleSubmit }>
+
+
 
                 {
                     fields.map( field => (
