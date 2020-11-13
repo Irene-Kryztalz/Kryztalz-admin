@@ -83,7 +83,7 @@ function AddGem ()
     let [ formState, changeHandler, reset ] = useForm( config );
     const [ error, setError ] = useState( "" );
     const [ willAdd, setWillAdd ] = useState( true );
-    const { sendData } = useContext( AppContext );
+    const { makeRequest, logout } = useContext( AppContext );
 
     const handleSubmit = async ( ev ) =>
     {
@@ -108,7 +108,7 @@ function AddGem ()
 
         }
 
-        const response = await sendData(
+        const response = await makeRequest(
             {
                 endpoint: "admin/gems",
                 method: "POST",
@@ -123,6 +123,11 @@ function AddGem ()
             }
             else
             {
+                if ( response.error.includes( "expire" ) )
+                {
+                    logout();
+                    return;
+                }
                 setError( response.error );
             }
         }

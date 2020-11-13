@@ -55,7 +55,7 @@ const reducer = ( state, action ) =>
 
 function EditUser () 
 {
-    const { permissions, sendData } = useContext( AppContext );
+    const { permissions, makeRequest, logout } = useContext( AppContext );
     const [ state, dispatch ] = useReducer( reducer,
         {
             last: "",
@@ -98,7 +98,7 @@ function EditUser ()
                     payload: email
                 } );
 
-            const response = await sendData(
+            const response = await makeRequest(
                 {
                     endpoint: "admin/user",
                     method: "POST",
@@ -206,7 +206,7 @@ function EditUser ()
                 endpoint = "admin/remove-permission";
             }
 
-            const response = await sendData(
+            const response = await makeRequest(
                 {
                     endpoint,
                     formData: JSON.stringify( payload ),
@@ -229,6 +229,12 @@ function EditUser ()
                 }
                 else
                 {
+
+                    if ( response.error.includes( "expire" ) )
+                    {
+                        logout();
+                        return;
+                    }
                     dispatch(
                         {
                             type: "setError",

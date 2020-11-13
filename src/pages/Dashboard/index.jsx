@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import SideDrawer from "../../components/SideDrawer";
 import AddGem from "./AddGem";
 import EditUser from "./EditUser/EditUser";
+import Overview from "./Overview/Overview";
 
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./index.module.css";
@@ -32,8 +33,13 @@ function Dashboard ()
             </aside>
             <section >
                 <Switch>
+                    <Route path="/home" component={ Overview } />
                     <Route path="/add-gem" component={ AddGem } />
                     <Route path="/edit-permissions" component={ EditUser } />
+                    <Route exact path="/">
+                        <Redirect to="/home" />
+                    </Route>
+
                 </Switch>
             </section>
         </div>

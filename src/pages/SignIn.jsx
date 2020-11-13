@@ -38,7 +38,7 @@ function SignIn ()
 {
     const [ formState, changeHandler ] = useForm( config );
     const [ error, setError ] = useState( "" );
-    const { login, sendData } = useContext( AppContext );
+    const { login, makeRequest } = useContext( AppContext );
 
 
     const handleSubmit = async ( ev ) =>
@@ -47,9 +47,9 @@ function SignIn ()
         ev.preventDefault();
         const formData = extractFormData( formState.state );
 
-        const response = await sendData(
+        const response = await makeRequest(
             {
-                endpoint: "user/signin",
+                endpoint: "admin/signin",
                 formData: JSON.stringify( formData ),
                 method: "post",
                 headers:
@@ -72,9 +72,7 @@ function SignIn ()
         }
         else
         {
-            const { token, expires } = response.data.user;
-            login( token, expires );
-            console.log( response.data.user );
+            login( response.data.user );
         }
 
     };

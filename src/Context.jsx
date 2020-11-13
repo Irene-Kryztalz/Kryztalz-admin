@@ -14,7 +14,8 @@ class AppProvider extends Component
             activeCurr: "",
             isAuth: false,
             baseUrl: "",
-            permissions: []
+            permissions: [],
+            user: {}
 
         };
 
@@ -47,7 +48,9 @@ class AppProvider extends Component
         }
         if ( this.checkExpiredToken() )
         {
-            this.setState( { isAuth: true } );
+            const user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
+
+            this.setState( { isAuth: true, user } );
             this.getPerms( base );
         }
 
@@ -93,7 +96,7 @@ class AppProvider extends Component
         this.setState( { activeCurr: curr } );
     };
 
-    sendData = async ( { endpoint, formData, method = "GET", headers } ) =>
+    makeRequest = async ( { endpoint, formData, method = "GET", headers } ) =>
     {
         this.setState( { loading: true } );
         headers =
@@ -108,13 +111,15 @@ class AppProvider extends Component
         try 
         {
 
-            if ( method === "GET" || method === "DELETE" )
+            if ( method === "GET" )
             {
                 response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
                     {
                         headers
                     } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
                         , 10000 ) ) ] );
+
+
             }
             else
             {
@@ -182,18 +187,20 @@ class AppProvider extends Component
         return diff > 0 ? true : false;
     };
 
-    login = ( token, expires ) =>
+    login = ( user ) =>
     {
+        const { token, expires, name, email } = user;
         localStorage.setItem( 'kryztalz-token', token );
         localStorage.setItem( 'kryztalz-token-exp', expires );
-        this.setState( { isAuth: true } );
+        localStorage.setItem( 'kryztalz-user', JSON.stringify( { name, email } ) );
+        this.setState( { isAuth: true, user: { name, email } } );
 
     };
 
     logout = () =>
     {
         localStorage.removeItem( 'kryztalz-token' );
-        localStorage.removeItem( 'kryztalz-token-exp' );
+        localStorage.removeItem( 'kryztalz-token-exp' ); localStorage.removeItem( 'kryztalz-user' );
         this.setState( { isAuth: false } );
     };
 
@@ -205,7 +212,7 @@ class AppProvider extends Component
                     ...this.state,
                     changeCurr: this.changeCurr,
                     login: this.login,
-                    sendData: this.sendData,
+                    makeRequest: this.makeRequest,
                     logout: this.logout
                 } }>
                 { this.props.children }

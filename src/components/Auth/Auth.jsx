@@ -5,7 +5,7 @@ import Field from "../Inputs/Field";
 import Button from "../Button";
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./Auth.module.css";
-import logo from "../../assets/images/logo-large.svg";
+import logo from "../../assets/images/logo-small.svg";
 
 import { PageError } from "../Errors/Errors";
 
