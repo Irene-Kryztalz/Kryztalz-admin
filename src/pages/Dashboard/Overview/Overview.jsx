@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AppContext from "../../../Context";
 import Chart from "../../../components/Chart";
-
+import { PageError } from "../../../components/Errors/Errors";
 import styles from "./Overview.module.css";
 
 function Overview ()
@@ -61,47 +61,59 @@ function Overview ()
     }, [ makeRequest, logout ] );
 
 
+
+
     return (
         <>
             <h2 className={ styles.Title } >
                 Welcome, { user.name }
             </h2>
 
-            <div className={ styles.GemCount }>
+            {
+                error
+                    ?
+                    <PageError message={ error } />
+                    :
+                    <>
+                        <div className={ styles.GemCount }>
 
-                <p className={ styles.CountText }>Total number of gems in database</p>
-                <p className={ styles.Count } >{ overview.gemCount }</p>
+                            <p className={ styles.CountText }>Total number of gems in database</p>
+                            <p className={ styles.Count } >{ overview.gemCount }</p>
 
-            </div>
+                        </div>
 
-            <section className={ styles.ChartFlex }>
-                <Chart
-                    percent
-                    byCut={ false }
-                    data={ overview.gemDistByType }
-                    total={ getTotal( overview.gemDistByType ) }
-                    label="Gem distribution by type" />
+                        <section className={ styles.ChartFlex }>
+                            <Chart
+                                percent
+                                byCut={ false }
+                                data={ overview.gemDistByType }
+                                total={ getTotal( overview.gemDistByType ) }
+                                label="Gem distribution by type" />
 
-                <Chart
-                    percent
-                    data={ overview.gemDistByCut }
-                    total={ getTotal( overview.gemDistByCut ) }
-                    label="Gem distribution by cut" />
-            </section>
+                            <Chart
+                                percent
+                                data={ overview.gemDistByCut }
+                                total={ getTotal( overview.gemDistByCut ) }
+                                label="Gem distribution by cut" />
+                        </section>
 
 
-            <section className={ styles.ChartFlex }>
-                <Chart
-                    byCut={ false }
-                    total={ getTotal( overview.ordersByType ) }
-                    data={ overview.ordersByType }
-                    label="Order distribution by gem type" />
+                        <section className={ styles.ChartFlex }>
+                            <Chart
+                                byCut={ false }
+                                total={ getTotal( overview.ordersByType ) }
+                                data={ overview.ordersByType }
+                                label="Order distribution by gem type" />
 
-                <Chart
-                    data={ overview.ordersByCut }
-                    total={ getTotal( overview.ordersByCut ) }
-                    label="Order distribution by gem cut" />
-            </section>
+                            <Chart
+                                data={ overview.ordersByCut }
+                                total={ getTotal( overview.ordersByCut ) }
+                                label="Order distribution by gem cut" />
+                        </section>
+
+                    </>
+            }
+
 
 
         </>

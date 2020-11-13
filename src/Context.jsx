@@ -155,7 +155,7 @@ class AppProvider extends Component
             //no network
             //or request timeout
             return {
-                error: `${ err.message }.Service Timeout, please check internet connection or contact the site administrator(s) directly.`
+                error: `${ err.message }. Please check internet connection or contact the site administrator(s) directly.`
             };
 
         }
