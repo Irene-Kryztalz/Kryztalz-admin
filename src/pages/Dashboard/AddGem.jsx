@@ -52,7 +52,7 @@ const config =
     },
     price:
     {
-        label: "price per weight",
+        label: "price per weight (in ₦)",
         control: "number",
         placeholder: "Input price...",
         validators: [ required, price ],

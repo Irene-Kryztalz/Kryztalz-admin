@@ -1,11 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { joinClasses } from "../../utils/joinClasses";
 import { InputError } from "../Errors/Errors";
+import ImagePreview from "../ImagePreview/ImagePreview";
 
 function File ( props ) 
 {
     const input = useRef();
     const divWrap = useRef();
+    const [ images, setImages ] = useState( props.photos || [] );
 
     const addClasses = () =>
     {
@@ -49,12 +51,26 @@ function File ( props )
             }
         };
 
+        const pics = [ ...e.dataTransfer.files ].map( img => URL.createObjectURL( img ) );
+
+        setImages( pics );
+
 
         props.changeHandler( evt );
         input.current.files = e.dataTransfer.files;
+
         handleBlur();
 
     };
+
+    const handleChange = e =>
+    {
+        props.changeHandler( e );
+        const pics = [ ...e.target.files ].map( img => URL.createObjectURL( img ) );
+        setImages( pics );
+    };
+
+
 
     return (
         <div className={ joinClasses( props.ExtraGroupClass, props.DragDrop ) }>
@@ -73,7 +89,7 @@ function File ( props )
                 <input
                     ref={ input }
                     accept="image/*"
-                    onChange={ props.changeHandler }
+                    onChange={ handleChange }
                     multiple
                     type="file"
                     name={ props.name }
@@ -82,6 +98,8 @@ function File ( props )
                     id={ props.name } />
 
             </label>
+
+            <ImagePreview images={ images } />
 
             {props.touched && !props.valid && <InputError message={ props.message } /> }
         </div>

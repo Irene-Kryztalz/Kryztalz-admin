@@ -10,12 +10,11 @@ class AppProvider extends Component
         {
             gems: [],
             loading: false,
-            currencies: {},
-            activeCurr: "",
             isAuth: false,
             baseUrl: "",
             permissions: [],
-            user: {}
+            user: {},
+            count: 0
 
         };
 
@@ -31,21 +30,10 @@ class AppProvider extends Component
         {
             base = process.env.REACT_APP_SERVER;
         }
-        if ( !this.state.currencies[ "ngn" ] )
-        {
-            fetch( "./currency-country.json" )
-                .then( resp => resp.json() )
-                .then( curr =>
-                {
-                    this.setState(
-                        {
-                            activeCurr: "ngn",
-                            baseUrl: base,
-                            currencies: this.formatData( curr )
-                        }
-                    );
-                } );
-        }
+
+        this.setState( { baseUrl: base } );
+
+
         if ( this.checkExpiredToken() )
         {
             const user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
@@ -91,14 +79,16 @@ class AppProvider extends Component
             } );
     };
 
-    changeCurr = ( curr ) =>
-    {
-        this.setState( { activeCurr: curr } );
-    };
 
-    makeRequest = async ( { endpoint, formData, method = "GET", headers } ) =>
+    makeRequest = async ( { endpoint, formData, method = "GET", headers }, loader = true ) =>
     {
-        this.setState( { loading: true } );
+        method = method.toUpperCase();
+
+        if ( loader )
+        {
+            this.setState( { loading: true } );
+        }
+
         headers =
         {
             ...headers,
@@ -163,20 +153,6 @@ class AppProvider extends Component
 
     };
 
-    formatData = ( currencies ) =>
-    {
-        const formatted = {};
-        for ( let cur in currencies ) 
-        {
-            formatted[ cur.toLowerCase() ] =
-            {
-                currencySymbol: currencies[ cur ].currencySymbol.toLowerCase(),
-                currencyName: currencies[ cur ].currencyName.toLowerCase(),
-            };
-        }
-
-        return formatted;
-    };
 
     checkExpiredToken = () =>
     {
@@ -204,16 +180,22 @@ class AppProvider extends Component
         this.setState( { isAuth: false } );
     };
 
+    setGems = ( items, count ) =>
+    {
+        const gems = [ ...this.state.gems, ...items ];
+        this.setState( { gems, count } );
+    };
+
     render ()
     {
         return (
             <AppContext.Provider value={
                 {
                     ...this.state,
-                    changeCurr: this.changeCurr,
                     login: this.login,
                     makeRequest: this.makeRequest,
-                    logout: this.logout
+                    logout: this.logout,
+                    setGems: this.setGems
                 } }>
                 { this.props.children }
             </AppContext.Provider>

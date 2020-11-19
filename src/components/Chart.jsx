@@ -63,8 +63,8 @@ const gold = "rgb(250, 219, 140)";
 function Chart ( { data, byCut = true, label, total } )
 {
 
-
     if ( !data?.length ) return null;
+
     return (
         <div>
             <VictoryChart
@@ -95,25 +95,20 @@ function Chart ( { data, byCut = true, label, total } )
                 <VictoryAxis
                     dependentAxis
                     tickValues={ [ 20, 40, 60, 80, 100 ] }
-                    tickFormat={ ( t ) => 
+                    tickFormat={ ( t ) => `${ t }%` }
+                    style=
                     {
-                        return `${ t }%`;
-                    } }
-
-                    style={
                         {
                             axis: { stroke: gold },
                             tickLabels: { fill: gold },
-                            grid:
-                            {
-                                stroke: gold
-                            },
-
-                        } }
+                            grid: { stroke: gold }
+                        }
+                    }
 
                 />
                 <VictoryBar
-                    style={
+                    style=
+                    {
                         {
                             data:
                             {
@@ -130,7 +125,8 @@ function Chart ( { data, byCut = true, label, total } )
                                 cursor: "pointer"
                             }
 
-                        } }
+                        }
+                    }
                     data={ transformData( data, total ) }
                     x="_id"
                     y="count"
@@ -140,12 +136,10 @@ function Chart ( { data, byCut = true, label, total } )
                         <VictoryTooltip
                             flyoutPadding={ 10 }
                             pointerLength={ 6 }
-                            flyoutStyle={
-                                {
-                                    fill: gold
-                                } }
+                            flyoutStyle={ { fill: gold } }
                         />
                     }
+                    animate={ { duration: 100 } }
                 />
             </VictoryChart>
         </div>

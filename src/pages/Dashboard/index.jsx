@@ -5,6 +5,7 @@ import SideDrawer from "../../components/SideDrawer";
 import AddGem from "./AddGem";
 import EditUser from "./EditUser/EditUser";
 import Overview from "./Overview/Overview";
+import GemList from "./GemDisplay/GemList/GemList";
 
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./index.module.css";
@@ -36,6 +37,7 @@ function Dashboard ()
                     <Route path="/home" component={ Overview } />
                     <Route path="/add-gem" component={ AddGem } />
                     <Route path="/edit-permissions" component={ EditUser } />
+                    <Route path="/all-gems" component={ GemList } />
                     <Route exact path="/">
                         <Redirect to="/home" />
                     </Route>

@@ -10,14 +10,14 @@ function UserCard ( { user, allowed, setMode, allowedLen, nAllowedLen } )
     return (
         <div className={ classes.Card }>
 
-            <Title lS="2px" fS="1rem" width="32%">User name</Title>
+            <Title lS="2px" fs="1rem" width="32%">User name</Title>
             <p className={ joinClasses( classes.Text, classes.Name ) }>{ user.name }</p>
 
-            <Title lS="2px" fS="1rem" width="32%">User email</Title>
+            <Title lS="2px" fs="1rem" width="32%" > User email</Title >
 
             <p className={ classes.Text }>{ user.email }</p>
 
-            <Title lS="2px" fS="1rem" width="50%">User permissions</Title>
+            <Title lS="2px" fs="1rem" width="50%" > User permissions</Title >
 
             <div className={ classes.List }>
 
@@ -57,7 +57,7 @@ function UserCard ( { user, allowed, setMode, allowedLen, nAllowedLen } )
 
 
 
-        </div>
+        </div >
     );
 }
 
