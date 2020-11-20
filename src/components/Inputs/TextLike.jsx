@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { InputError } from "../Errors/Errors";
 
 function TextLike ( props ) 
 {
@@ -48,6 +49,9 @@ function TextLike ( props )
 
                     </span> : null
             }
+
+
+            {props.touched && !props.valid && <InputError message={ props.message } /> }
         </div>
     );
 }

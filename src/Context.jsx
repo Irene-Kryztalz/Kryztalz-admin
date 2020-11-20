@@ -9,12 +9,12 @@ class AppProvider extends Component
     state =
         {
             gems: [],
-            users: [],
             loading: false,
-            currencies: {},
-            activeCurr: "",
             isAuth: false,
-            baseUrl: ""
+            baseUrl: "",
+            permissions: [],
+            user: {},
+            count: 0
 
         };
 
@@ -30,120 +30,189 @@ class AppProvider extends Component
         {
             base = process.env.REACT_APP_SERVER;
         }
-        if ( !this.state.currencies[ "ngn" ] )
-        {
-            fetch( "./currency-country.json" )
-                .then( resp => resp.json() )
-                .then( curr =>
-                {
-                    this.setState(
-                        {
-                            activeCurr: "ngn",
-                            baseUrl: base,
-                            currencies: this.formatData( curr )
-                        }
-                    );
-                } );
-        }
+
+        this.setState( { baseUrl: base } );
+
+
         if ( this.checkExpiredToken() )
         {
-            this.setState( { isAuth: true } );
+            const user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
+
+            this.setState( { isAuth: true, user } );
+            this.getPerms( base );
         }
 
     }
 
-    changeCurr = ( curr ) =>
+    getPerms = async ( baseUrl ) => 
     {
-        this.setState( { activeCurr: curr } );
+        const token = localStorage.getItem( "kryztalz-token" );
+
+        fetch( `${ baseUrl }/admin/permissions`,
+            {
+                headers:
+                {
+                    Authorization: `Bearer ${ token }`
+                }
+            } )
+            .then( res => res.json() )
+            .then( perms => 
+            {
+                const permissions = [];
+                if ( !perms.error )
+                {
+
+                    for ( const perm in perms ) 
+                    {
+                        const p =
+                        {
+                            name: perm.replace( /_/ig, " " ),
+                            slug: perm,
+                            id: perms[ perm ]
+                        };
+
+                        permissions.push( p );
+                    }
+
+                    this.setState( { permissions } );
+                }
+
+            } )
+            .catch( e => 
+            {
+                this.setState( { permissions: { error: e.error } } );
+            } );
     };
 
-    sendData = async ( { endpoint, formData, method = "GET", headers, } ) =>
+
+    makeRequest = async ( { endpoint, formData, method = "GET", headers }, loader = true ) =>
     {
-        this.setState( { loading: true } );
+        method = method.toUpperCase();
+        const timeOut = 20000;
+
+        if ( loader )
+        {
+            this.setState( { loading: true } );
+        }
+
         headers =
         {
             ...headers,
-            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-admin-token" ) }`
+            Authorization: `Bearer ${ localStorage.getItem( "kryztalz-token" ) }`
         };
 
         let response,
             url = this.state.baseUrl;
 
-        if ( method === "GET" )
-        {
-            response = await fetch( `${ url }/${ endpoint }` );
-        }
-        else
-        {
-            response = await fetch( `${ url }/${ endpoint }`,
-                {
-                    method,
-                    headers,
-                    body: formData
-                } );
-        }
-
-
-        if ( response.ok )
-        {
-            this.setState( { loading: false } );
-            return { data: await response.json() };
-        }
-        else
+        try 
         {
 
-            this.setState( { loading: false } );
-            return {
-                code: response.status,
-                error: await response.json()
-            };
-        }
-
-    };
-
-    formatData = ( currencies ) =>
-    {
-        const formatted = {};
-        for ( let cur in currencies ) 
-        {
-            formatted[ cur.toLowerCase() ] =
+            if ( method === "GET" )
             {
-                currencySymbol: currencies[ cur ].currencySymbol.toLowerCase(),
-                currencyName: currencies[ cur ].currencyName.toLowerCase(),
+                response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
+                    {
+                        headers
+                    } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
+                        , timeOut ) ) ] );
+
+
+            }
+            else
+            {
+                response = await fetch( `${ url }/${ endpoint }`,
+                    {
+                        method,
+                        headers,
+                        body: formData
+                    } );
+            }
+
+            if ( response.ok )
+            {
+                this.setState( { loading: false } );
+                return { data: await response.json() };
+            }
+            else
+            {
+
+                this.setState( { loading: false } );
+                return {
+                    code: response.status,
+                    error: await response.json()
+                };
+            }
+
+        }
+        catch ( err )
+        {
+            this.setState( { loading: false } );
+            //handle error like server is offline
+            //no network
+            //or request timeout
+            return {
+                error: `${ err.message }. Please check internet connection or contact the site administrator(s) directly.`
             };
+
         }
 
-        return formatted;
-    };
 
+    };
 
     checkExpiredToken = () =>
     {
         const now = new Date().getTime();
-
-        const token = localStorage.getItem( "kryztalz-admin-token" );
-        const expires = +localStorage.getItem( "kryztalz-admin-exp" );
-
+        const token = localStorage.getItem( "kryztalz-token" );
+        const expires = +localStorage.getItem( "kryztalz-token-exp" );
         const diff = ( expires && token ) ? expires - now : 0;
-
         return diff > 0 ? true : false;
     };
 
-    login = ( token, expires ) =>
+    login = ( user ) =>
     {
-        localStorage.setItem( 'kryztalz-admin-token', token );
-        localStorage.setItem( 'kryztalz-admin-exp', expires );
-        this.setState( { isAuth: true } );
+        const { token, expires, name, email } = user;
+        localStorage.setItem( 'kryztalz-token', token );
+        localStorage.setItem( 'kryztalz-token-exp', expires );
+        localStorage.setItem( 'kryztalz-user', JSON.stringify( { name, email } ) );
+        this.setState( { isAuth: true, user: { name, email } } );
 
     };
 
     logout = () =>
     {
-        localStorage.removeItem( 'kryztalz-admin-token' );
-        localStorage.removeItem( 'kryztalz-admin-exp' );
+        localStorage.removeItem( 'kryztalz-token' );
+        localStorage.removeItem( 'kryztalz-token-exp' ); localStorage.removeItem( 'kryztalz-user' );
         this.setState( { isAuth: false } );
     };
 
+    setGems = ( items, count ) =>
+    {
+        let gems;
+        if ( !Array.isArray( items ) )
+        {
+
+            gems = [ ...this.state.gems ];
+            const editedGemIndex = gems.findIndex( g => g._id === items._id );
+
+
+            if ( editedGemIndex > -1 )
+            {
+                gems[ editedGemIndex ] = items;
+            }
+
+        }
+        else if ( count && count < this.state.count )
+        {
+
+            gems = [ ...items ];
+        }
+        else
+        {
+
+            gems = [ ...this.state.gems, ...items ];
+        }
+
+        this.setState( { gems, count } );
+    };
 
     render ()
     {
@@ -151,10 +220,11 @@ class AppProvider extends Component
             <AppContext.Provider value={
                 {
                     ...this.state,
-                    changeCurr: this.changeCurr,
                     login: this.login,
-                    sendData: this.sendData,
-                    logout: this.logout
+                    makeRequest: this.makeRequest,
+                    logout: this.logout,
+                    setGems: this.setGems,
+                    getPerms: this.getPerms
                 } }>
                 { this.props.children }
             </AppContext.Provider>

@@ -1,12 +1,11 @@
-// @ts-nocheck
 import { useReducer } from 'react';
 import { flattenFormFields } from "../utils/flattenFormFields";
 
-const configureInitState = ( fieldConfig ) =>
+const configureInitState = ( fieldConfig, isEdit ) =>
 {
     const formState =
     {
-        valid: false,
+        valid: isEdit,
         isSubmitting: false,
         state: {},
     };
@@ -15,33 +14,79 @@ const configureInitState = ( fieldConfig ) =>
     for ( const f in fieldConfig )
     {
 
-        if ( fieldConfig[ f ].control === "file" )
+        switch ( fieldConfig[ f ].control ) 
         {
-            state[ f ] =
-            {
-                control: fieldConfig[ f ].control,
-                label: fieldConfig[ f ].label,
-                photos: [],
-                valid: false,
-                validators: fieldConfig[ f ].validators,
+            case "file":
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: isEdit,
+                    photos: fieldConfig[ f ].photos || [],
+                    validators: fieldConfig[ f ].validators,
 
-            };
-        }
-        else
-        {
-            state[ f ] =
-            {
-                control: fieldConfig[ f ].control,
-                label: fieldConfig[ f ].label,
-                placeholder: fieldConfig[ f ].placeholder,
-                value: "",
-                valid: false,
-                validators: fieldConfig[ f ].validators,
-                options: fieldConfig[ f ].options
-            };
+                };
+
+                break;
+
+            case "checkbox":
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: isEdit,
+                };
+
+                state[ f ].value = [];
+                state[ f ].options = [];
+
+                fieldConfig[ f ].options.forEach( ( opt, i ) =>
+                {
+                    const option =
+                    {
+                        name: `${ f }-${ opt.name }`,
+                        text: opt.name,
+                        checked: false,
+                        value: opt.val,
+                        field: f
+                    };
+
+                    state[ f ].options.push( option );
+                } );
+
+                break;
+
+            case "select":
+                state[ f ] =
+                {
+                    options: fieldConfig[ f ].options,
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: isEdit,
+                    placeholder: fieldConfig[ f ].placeholder,
+                    value: fieldConfig[ f ].value || "",
+                    validators: fieldConfig[ f ].validators
+                };
+                break;
+
+            default:
+                state[ f ] =
+                {
+                    control: fieldConfig[ f ].control,
+                    label: fieldConfig[ f ].label,
+                    valid: isEdit,
+                    placeholder: fieldConfig[ f ].placeholder,
+                    value: fieldConfig[ f ].value || "",
+                    validators: fieldConfig[ f ].validators
+                };
+                break;
         }
 
-    };
+        state[ f ].touched = false;
+        state[ f ].message = fieldConfig[ f ].message;
+
+    }
+
 
     //so that i can apply some array methods to objects
     state[ Symbol.iterator ] = function ()
@@ -90,17 +135,9 @@ const reducer = ( state, action ) =>
 
             field = formState.state[ action.payload.name ];
             formState.valid = false;
-
+            field.touched = true;
             field.value = action.payload.value;
             isValid = true;
-
-            const pwd = formState.state.password ? formState.state.password.value.trim() : null;
-            const confirmPwd = formState.state.confirmPassword ? formState.state.confirmPassword.value.trim() : null;
-
-            if ( pwd && confirmPwd )
-            {
-                isValid = isValid && ( pwd === confirmPwd );
-            }
 
             if ( field.control === "email" )
             {
@@ -122,12 +159,17 @@ const reducer = ( state, action ) =>
             return formState;
 
         case "file-change":
-
             field = formState.state[ action.payload.name ];
             formState.valid = false;
+            field.touched = true;
             const photos = action.payload.files;
 
-            isValid = true && field.validators[ 0 ]( photos.length );
+            isValid = true;
+
+            field.validators.forEach( check =>
+            {
+                isValid = isValid && check( [ ...photos ] );
+            } );
 
             if ( isValid )
             {
@@ -141,29 +183,49 @@ const reducer = ( state, action ) =>
                 formState.valid = true;
             }
 
-            console.log( formState );
+            return formState;
+
+        case "checked":
+
+            field = formState.state[ action.payload.field ];
+            const optIndex = field.options.findIndex( o => o.name === action.payload.name );
+
+            const values = [ ...new Set( [ ...field.value, action.payload.value ] ) ];
+
+            field.value = values;
+            field.options[ optIndex ].checked = true;
 
             return formState;
 
+        case "checked-off":
+
+            field = formState.state[ action.payload.field ];
+            const optInd = field.options.findIndex( o => o.name === action.payload.name );
+
+            field.options[ optInd ].checked = false;
+
+            field.value = field.value.filter( v => v !== action.payload.value );
+            return formState;
+
+        case "reset":
+            formState = configureInitState( action.payload );
+            return formState;
 
         default:
             return state;
     }
 
-
 };
 
-function useForm ( config )
+function useForm ( config, isEdit = false )
 {
-    const [ formState, dispatch ] = useReducer( reducer, configureInitState( config ) );
+    const [ formState, dispatch ] = useReducer( reducer, configureInitState( config, isEdit ) );
 
     const changeHandler = evt =>
     {
-
         const { value, name, type } = evt.target;
         if ( type === "file" )
         {
-
             const files = evt.target.files;
             dispatch(
                 {
@@ -171,11 +233,41 @@ function useForm ( config )
                     payload:
                     {
                         name,
-                        files,
-
+                        files
                     }
                 } );
 
+        }
+        else if ( type === "checkbox" )
+        {
+            if ( evt.target.checked )
+            {
+                dispatch(
+                    {
+                        type: "checked",
+                        payload:
+                        {
+                            name,
+                            value,
+                            field: evt.target.dataset.field
+                        }
+                    } );
+
+            }
+            else
+            {
+                dispatch(
+                    {
+                        type: "checked-off",
+                        payload:
+                        {
+                            name,
+                            value,
+                            field: evt.target.dataset.field
+                        }
+                    } );
+
+            }
         }
         else
         {
@@ -192,7 +284,12 @@ function useForm ( config )
         }
     };
 
-    return [ formState, changeHandler ];
+    const reset = () =>
+    {
+        dispatch( { type: "reset", payload: config } );
+    };
+
+    return [ formState, changeHandler, reset ];
 }
 
 export default useForm;

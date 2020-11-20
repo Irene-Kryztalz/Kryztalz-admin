@@ -1,4 +1,5 @@
 import React from 'react';
+import { InputError } from "../Errors/Errors";
 
 function Select ( props ) 
 {
@@ -9,6 +10,7 @@ function Select ( props )
             <select
                 className={ props.classNamesInput }
                 onChange={ props.changeHandler }
+                value={ props.value }
                 name={ props.name }
                 id={ props.name }>
                 <option value="">
@@ -24,6 +26,7 @@ function Select ( props )
                 }
 
             </select>
+            {props.touched && !props.valid && <InputError message={ props.message } /> }
         </div>
     );
 }

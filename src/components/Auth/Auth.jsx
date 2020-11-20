@@ -1,11 +1,13 @@
-// @ts-nocheck
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Field from "../Inputs/Field";
 import Button from "../Button";
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./Auth.module.css";
-import logo from "../../assets/images/logo-large.svg";
+import logo from "../../assets/images/logo-small.svg";
+
+import { PageError } from "../Errors/Errors";
 
 
 function Auth ( { fields, ...props } ) 
@@ -13,6 +15,10 @@ function Auth ( { fields, ...props } )
 
     return (
         <div className={ classes.FormWrap }>
+
+            {
+                props.error && <PageError message={ props.error } />
+            }
 
             <form onSubmit={ props.handleSubmit } method="post">
                 <div className={ classes.Logo }>
@@ -26,9 +32,10 @@ function Auth ( { fields, ...props } )
                             changeHandler={ props.changeHandler }
                             shouldAutoFocus={ i === 0 }
                             classNamesGroup={ classes.Group }
-                            classNamesInput={ joinClasses( classes.Input ) }
+                            classNamesInput={ classes.Input }
                             classNamesLabel={ classes.Label }
                             name={ field.fieldName }
+                            label={ field.label }
                             { ...field }
                         />
                     ) )

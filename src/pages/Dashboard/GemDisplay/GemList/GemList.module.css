@@ -1,0 +1,142 @@
+.Grid
+{
+   display: grid;
+   grid-template-columns: 1fr;
+   grid-template-rows: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 10px;
+  padding: 10px;
+}
+
+.Grid > article
+{
+   justify-self: center;
+}
+
+
+@media screen and (min-width:400px)
+{
+    .Grid 
+    {
+        
+        grid-template-rows: auto;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        justify-self: initial;
+    }
+    
+}
+
+
+@media screen and (min-width:900px)
+{
+    .Grid 
+    {
+       
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+}
+
+@media screen and (min-width:1200px)
+{
+    .Grid 
+    {
+        grid-row-gap: 58px;       
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+}
+
+
+.Modal
+{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.ModalBody
+{
+    position: relative;
+    background-color: var(--blue);
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin: 10px;
+    max-width: 500px;
+    min-height: 500px;
+    color: var(--gold);    
+    font-family: "Crimson Pro";
+
+}
+
+.ModalBody h2
+{
+    padding-bottom: 10px;
+}
+
+.Image
+{
+    margin: 10px auto;
+    max-width: 300px;
+    height: 300px;
+    width: 100%;
+}
+
+.ModalBody h3
+{
+    text-transform: capitalize;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.Btns
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 100px;
+}
+
+.Error
+{
+    text-align: center;
+    font-size: 1.1rem;
+    margin: 20px 0
+}
+
+.Icon
+{
+    font-size: 10rem;
+    text-align: center;
+    margin: 20px;
+}
+
+.Nothing
+{
+    height: 50vh;
+    padding: 10%;
+    background-color: var(--blue);
+    color: var(--gold);
+    text-align: center;
+}
+
+.Nothing h1
+{
+    margin-bottom: 20px;   
+}
+
+
+@media screen and (min-width:768px)
+{
+    .ModalBody
+    {
+        padding: 25px;
+    }
+
+}

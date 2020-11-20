@@ -1,0 +1,78 @@
+.Group
+{
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 5px;
+}
+
+.Switch 
+{
+  position: relative;
+  width: 60px;
+  height: 34px;
+  
+}
+
+.Switch input {display:none;}
+
+.Slider 
+{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;  
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.Slider:before 
+{
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input + .Slider ,
+input:focus + .Slider 
+{   
+  box-shadow: 1px 2px 0px 0px var(--gold);
+}
+
+input:checked + .Slider 
+{
+  background-color: var(--gold);  
+  box-shadow: 1px 2px 0px 0px #ccc;
+}
+
+input:checked + .Slider:before
+ {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.Slider.Round {
+  border-radius: 34px;
+}
+
+.Slider.Round:before {
+  border-radius: 50%;
+}
+
+.Text
+{
+    color: var(--gold);
+    margin-left: 10px;
+    font-family: monospace;
+}

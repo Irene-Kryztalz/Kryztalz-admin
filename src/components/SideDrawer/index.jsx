@@ -23,6 +23,11 @@ const routes =
             path: "/edit-permissions",
             text: "edit user",
             icon: <i className="fas fa-user-plus"></i>
+        },
+        {
+            path: "/all-gems",
+            text: "all gems",
+            icon: <i className="far fa-list-alt"></i>
         }
     ];
 
@@ -42,10 +47,6 @@ function Index ( { isOpen, toggle } )
                 </NavLink>
 
             </div>
-
-
-
-
 
             <ul className={ classes.Routes }>
                 {
