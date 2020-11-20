@@ -44,9 +44,10 @@ class AppProvider extends Component
 
     }
 
-    getPerms = async ( baseUrl ) =>
+    getPerms = async ( baseUrl ) => 
     {
         const token = localStorage.getItem( "kryztalz-token" );
+
         fetch( `${ baseUrl }/admin/permissions`,
             {
                 headers:
@@ -58,20 +59,24 @@ class AppProvider extends Component
             .then( perms => 
             {
                 const permissions = [];
-
-                for ( const perm in perms ) 
+                if ( !perms.error )
                 {
-                    const p =
-                    {
-                        name: perm.replace( /_/ig, " " ),
-                        slug: perm,
-                        id: perms[ perm ]
-                    };
 
-                    permissions.push( p );
+                    for ( const perm in perms ) 
+                    {
+                        const p =
+                        {
+                            name: perm.replace( /_/ig, " " ),
+                            slug: perm,
+                            id: perms[ perm ]
+                        };
+
+                        permissions.push( p );
+                    }
+
+                    this.setState( { permissions } );
                 }
 
-                this.setState( { permissions } );
             } )
             .catch( e => 
             {
@@ -83,6 +88,7 @@ class AppProvider extends Component
     makeRequest = async ( { endpoint, formData, method = "GET", headers }, loader = true ) =>
     {
         method = method.toUpperCase();
+        const timeOut = 20000;
 
         if ( loader )
         {
@@ -107,19 +113,18 @@ class AppProvider extends Component
                     {
                         headers
                     } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
-                        , 10000 ) ) ] );
+                        , timeOut ) ) ] );
 
 
             }
             else
             {
-                response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
+                response = await fetch( `${ url }/${ endpoint }`,
                     {
                         method,
                         headers,
                         body: formData
-                    } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
-                        , 10000 ) ) ] );
+                    } );
             }
 
             if ( response.ok )
@@ -153,7 +158,6 @@ class AppProvider extends Component
 
     };
 
-
     checkExpiredToken = () =>
     {
         const now = new Date().getTime();
@@ -182,7 +186,32 @@ class AppProvider extends Component
 
     setGems = ( items, count ) =>
     {
-        const gems = [ ...this.state.gems, ...items ];
+        let gems;
+        if ( !Array.isArray( items ) )
+        {
+
+            gems = [ ...this.state.gems ];
+            const editedGemIndex = gems.findIndex( g => g._id === items._id );
+
+
+            if ( editedGemIndex > -1 )
+            {
+                gems[ editedGemIndex ] = items;
+            }
+
+        }
+        else if ( count && count < this.state.count )
+        {
+
+            gems = [ ...items ];
+        }
+        else
+        {
+
+            console.log( 5 );
+            gems = [ ...this.state.gems, ...items ];
+        }
+
         this.setState( { gems, count } );
     };
 
@@ -195,7 +224,8 @@ class AppProvider extends Component
                     login: this.login,
                     makeRequest: this.makeRequest,
                     logout: this.logout,
-                    setGems: this.setGems
+                    setGems: this.setGems,
+                    getPerms: this.getPerms
                 } }>
                 { this.props.children }
             </AppContext.Provider>

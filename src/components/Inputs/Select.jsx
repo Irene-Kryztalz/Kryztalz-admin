@@ -10,6 +10,7 @@ function Select ( props )
             <select
                 className={ props.classNamesInput }
                 onChange={ props.changeHandler }
+                value={ props.value }
                 name={ props.name }
                 id={ props.name }>
                 <option value="">

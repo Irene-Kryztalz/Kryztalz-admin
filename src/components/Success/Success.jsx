@@ -6,29 +6,27 @@ import { joinClasses } from "../../utils/joinClasses";
 function PageSuccess ( { message, styles, handler, isEdit } ) 
 {
     return (
-        <div className={ joinClasses( classes.PageSuccess, styles ) } >
-            <h1>{ message }</h1>
-            <br />
-            {
-                !isEdit && <Button onClick={ handler }> Add gem </Button>
-            }
+        <section className={ classes.Success } >
+            <div className={ joinClasses( classes.PageSuccess, styles ) } >
 
-        </div>
-    );
-}
+                <i className="far fa-check-circle"></i>
+
+                <h1>{ message }</h1>
 
 
-function ModalSuccess ( { message, styles } ) 
-{
-    return (
-        <div>
 
-        </div>
+                <br />
+                {
+                    <Button onClick={ handler }> { isEdit ? "Go back" : "Add gem" } </Button>
+                }
+
+            </div>
+        </section>
+
     );
 }
 
 export 
 {
-    PageSuccess,
-    ModalSuccess,
+    PageSuccess
 };

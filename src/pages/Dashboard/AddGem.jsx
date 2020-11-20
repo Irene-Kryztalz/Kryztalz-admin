@@ -83,7 +83,7 @@ function AddGem ()
     let [ formState, changeHandler, reset ] = useForm( config );
     const [ error, setError ] = useState( "" );
     const [ willAdd, setWillAdd ] = useState( true );
-    const { makeRequest, logout } = useContext( AppContext );
+    const { makeRequest, logout, setGems } = useContext( AppContext );
 
     const handleSubmit = async ( ev ) =>
     {
@@ -115,6 +115,8 @@ function AddGem ()
                 formData,
             } );
 
+
+
         if ( response.error )
         {
             if ( typeof response.error === "object" )
@@ -135,6 +137,7 @@ function AddGem ()
         {
             setWillAdd( false );
             reset();
+            setGems( [ response.data ] );
 
         }
 

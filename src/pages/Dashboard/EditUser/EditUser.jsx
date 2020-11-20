@@ -55,7 +55,7 @@ const reducer = ( state, action ) =>
 
 function EditUser () 
 {
-    const { permissions, makeRequest, logout } = useContext( AppContext );
+    const { getPerms, permissions, makeRequest, logout } = useContext( AppContext );
     const [ state, dispatch ] = useReducer( reducer,
         {
             last: "",
@@ -71,6 +71,11 @@ function EditUser ()
 
     const [ showForm, setShowForm ] = useState( false );
     const [ config, setConfig ] = useState( {} );
+
+    if ( permissions.length < 1 )
+    {
+        getPerms();
+    }
 
     const changeEmail = ( e ) =>
     {

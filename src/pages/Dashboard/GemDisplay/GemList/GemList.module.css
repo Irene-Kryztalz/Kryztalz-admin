@@ -81,6 +81,7 @@
 {
     margin: 10px auto;
     max-width: 300px;
+    height: 300px;
     width: 100%;
 }
 
@@ -109,10 +110,33 @@
     margin: 20px 0
 }
 
+.Icon
+{
+    font-size: 10rem;
+    text-align: center;
+    margin: 20px;
+}
+
+.Nothing
+{
+    height: 50vh;
+    padding: 10%;
+    background-color: var(--blue);
+    color: var(--gold);
+    text-align: center;
+}
+
+.Nothing h1
+{
+    margin-bottom: 20px;   
+}
+
+
 @media screen and (min-width:768px)
 {
     .ModalBody
     {
         padding: 25px;
     }
+
 }

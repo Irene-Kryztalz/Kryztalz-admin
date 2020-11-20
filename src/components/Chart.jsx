@@ -89,6 +89,7 @@ function Chart ( { data, byCut = true, label, total } )
                         } }
 
                     label={ label }
+                    tickLabelComponent={ <VictoryLabel dx={ 10 } dy={ 5 } angle={ 20 } /> }
                     axisLabelComponent={ <VictoryLabel dy={ -250 } /> }
                 />
 

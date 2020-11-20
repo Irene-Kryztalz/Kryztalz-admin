@@ -11,6 +11,7 @@ function Textarea ( props )
             <textarea
                 className={ props.classNamesInput }
                 onChange={ props.changeHandler }
+                value={ props.value }
                 name={ props.name }
                 id={ props.name }
                 rows="5"></textarea>

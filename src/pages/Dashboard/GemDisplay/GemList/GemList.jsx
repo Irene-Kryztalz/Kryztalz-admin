@@ -1,5 +1,7 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
 
+import { useHistory } from "react-router-dom";
+
 import AppContext from "../../../../Context";
 import Overlay from "../../../../components/Overlay";
 import Button from "../../../../components/Button";
@@ -13,6 +15,7 @@ function numWithComma ( num )
 
 function GemList ()
 {
+    const history = useHistory();
     const
         {
             count,
@@ -43,7 +46,7 @@ function GemList ()
 
     const deleteGem = async () =>
     {
-        const { error, data } = await makeRequest(
+        const { error } = await makeRequest(
             {
                 endpoint: `admin/gems/${ activeGem._id }`,
                 method: "DELETE"
@@ -82,6 +85,8 @@ function GemList ()
         async () =>
         {
 
+
+            setError( null );
             let response;
 
             if ( !gems.length )
@@ -110,6 +115,12 @@ function GemList ()
                 }
                 else
                 {
+
+                    if ( error.includes( "expire" ) )
+                    {
+                        logout();
+                        return;
+                    }
                     setError( error );
                 }
             }
@@ -119,7 +130,7 @@ function GemList ()
             }
 
         },
-        [ makeRequest, setGems, setError, gems ],
+        [ makeRequest, setGems, setError, gems, logout ],
     );
 
     useEffect( () => 
@@ -131,12 +142,52 @@ function GemList ()
 
     }, [ gems, makeRequest, setGems, getGems ] );
 
+    const goTo = async id =>
+    {
+        const { error, data } = await makeRequest(
+            {
+                endpoint: `shop/gems/${ id }`
+            } );
+
+        if ( error )
+        {
+            if ( typeof error === "object" )
+            {
+                setError( error.error );
+            }
+            else
+            {
+                if ( error.includes( "expire" ) )
+                {
+                    logout();
+                    return;
+                }
+                setError( error );
+            }
+        }
+        else
+        {
+            history.push( `/edit-gem/${ id }`, data );
+        }
+
+    };
+
+
     return (
         <div >
+
+            { !gems.length && <div className={ classes.Nothing }>
+                <h1  >Nothing to see here</h1>
+
+                <Button onClick={ getGems } >Try again</Button>
+            </div>
+            }
+
             <section className={ classes.Grid }>
 
                 {
                     gems.map( gem => <GemCard
+                        goTo={ goTo }
                         key={ gem._id }
                         _id={ gem._id }
                         name={ gem.name }
@@ -149,7 +200,7 @@ function GemList ()
             </section>
 
             {
-                ( count > gems.length ) && <button onClick={ getGems } >Load more</button>
+                ( count > gems.length ) && <Button onClick={ getGems } >Load more</Button>
             }
 
             {
@@ -204,7 +255,15 @@ function GemList ()
                             <h2>Error !!</h2>
                             <hr />
 
+
+                            <div className={ classes.Icon }>
+                                <i className="fas fa-exclamation-circle"></i>
+                            </div>
+
                             <p className={ classes.Error } >{ error }</p>
+
+
+
 
 
                             <div className={ classes.Btns }>

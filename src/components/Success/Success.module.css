@@ -1,3 +1,12 @@
+.Success
+{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .PageSuccess
 {
     background-color: var(--blue);
@@ -7,4 +16,24 @@
     width: 80%;
     margin: 10px auto;
     border-radius: 10px;
+}
+
+.PageSuccess h1
+{
+    font-size: 1.5rem;
+}
+
+.PageSuccess i
+{
+    font-size: 5rem;
+    display: inline-block;
+    margin: 20PX auto;
+}
+
+@media screen and (min-width:768px)
+{
+    .PageSuccess i
+    {
+        font-size: 8rem;
+    }
 }

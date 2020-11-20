@@ -30,6 +30,12 @@
     text-transform: capitalize;
 }
 
+.Card h3
+{
+    word-wrap: break-word;
+    font-size: 1.2rem !important;
+}
+
 
 .Toggle
 {
@@ -54,6 +60,12 @@
         display:grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+    }
+
+    .Card h3
+    {
+      
+        font-size: initial;
     }
 
 }

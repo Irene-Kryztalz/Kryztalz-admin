@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import SideDrawer from "../../components/SideDrawer";
 import AddGem from "./AddGem";
+import EditGem from "./EditGem";
 import EditUser from "./EditUser/EditUser";
 import Overview from "./Overview/Overview";
 import GemList from "./GemDisplay/GemList/GemList";
@@ -12,12 +13,14 @@ import classes from "./index.module.css";
 
 function Dashboard ()
 {
+
     const [ isOpen, setIsOpen ] = useState( false );
 
     const toggleOpen = () =>
     {
         setIsOpen( !isOpen );
     };
+
 
     return (
         <div className={ classes.MainAppContainer }>
@@ -34,12 +37,17 @@ function Dashboard ()
             </aside>
             <section >
                 <Switch>
-                    <Route path="/home" component={ Overview } />
-                    <Route path="/add-gem" component={ AddGem } />
-                    <Route path="/edit-permissions" component={ EditUser } />
-                    <Route path="/all-gems" component={ GemList } />
+                    <Route exact path="/home" component={ Overview } />
+                    <Route exact path="/add-gem" component={ AddGem } />
+                    <Route exact path="/edit-gem/:id" component={ EditGem } />
+                    <Route exact path="/edit-permissions" component={ EditUser } />
+                    <Route exact path="/all-gems" component={ GemList } />
                     <Route exact path="/">
                         <Redirect to="/home" />
+                    </Route>
+
+                    <Route path="/*">
+                        <h1>Not Found</h1>
                     </Route>
 
                 </Switch>

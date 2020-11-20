@@ -5,7 +5,7 @@ const configureInitState = ( fieldConfig, isEdit ) =>
 {
     const formState =
     {
-        valid: false,
+        valid: isEdit,
         isSubmitting: false,
         state: {},
     };
@@ -22,7 +22,7 @@ const configureInitState = ( fieldConfig, isEdit ) =>
                     control: fieldConfig[ f ].control,
                     label: fieldConfig[ f ].label,
                     valid: isEdit,
-                    photos: [],
+                    photos: fieldConfig[ f ].photos || [],
                     validators: fieldConfig[ f ].validators,
 
                 };
@@ -64,7 +64,7 @@ const configureInitState = ( fieldConfig, isEdit ) =>
                     label: fieldConfig[ f ].label,
                     valid: isEdit,
                     placeholder: fieldConfig[ f ].placeholder,
-                    value: "",
+                    value: fieldConfig[ f ].value || "",
                     validators: fieldConfig[ f ].validators
                 };
                 break;
@@ -76,7 +76,7 @@ const configureInitState = ( fieldConfig, isEdit ) =>
                     label: fieldConfig[ f ].label,
                     valid: isEdit,
                     placeholder: fieldConfig[ f ].placeholder,
-                    value: "",
+                    value: fieldConfig[ f ].value || "",
                     validators: fieldConfig[ f ].validators
                 };
                 break;

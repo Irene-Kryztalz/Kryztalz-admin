@@ -1,11 +1,10 @@
 import React from 'react';
 import classes from "./GemCard.module.css";
-import { NavLink } from "react-router-dom";
 import Button from "../Button";
 
 function GemCard ( props )
 {
-    const { name, price, image, type, _id, setActiveGem } = props;
+    const { name, price, image, type, _id, setActiveGem, goTo } = props;
     return (
         <article className={ classes.Card }>
 
@@ -27,8 +26,8 @@ function GemCard ( props )
                         bg="#000"
                         pad="5px"
                         fs="0.9rem"
-                        as={ NavLink }
-                        to="/add-gem" >
+                        onClick={ () => goTo( _id ) }
+                        to={ `/edit-gem/${ _id }` }>
                         <i className="far fa-edit"></i>
                       &nbsp;  Edit
                     </Button>
