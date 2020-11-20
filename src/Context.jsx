@@ -208,7 +208,6 @@ class AppProvider extends Component
         else
         {
 
-            console.log( 5 );
             gems = [ ...this.state.gems, ...items ];
         }
 

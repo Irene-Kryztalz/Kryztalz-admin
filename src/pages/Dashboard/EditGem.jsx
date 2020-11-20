@@ -117,27 +117,29 @@ function EditGem ()
         setError( null );
         ev.preventDefault();
         const formValues = extractFormData( formState.state );
-        let formData, headers = {};
+        let formData; let headers = {};
 
         if ( typeof formValues.photos[ 0 ] !== "string" )
         {
-            formData = new FormData();
+            const data = new FormData();
             for ( const key in formValues ) 
             {
                 if ( Array.isArray( formValues[ key ] ) )
                 {
                     formValues[ key ].forEach( item => 
                     {
-                        formData.append( key, item );
+                        data.append( key, item );
                     } );
                 }
 
                 else
                 {
-                    formData.append( key, formValues[ key ] );
+                    data.append( key, formValues[ key ] );
                 }
 
             }
+
+            formData = data;
         }
         else
         {
