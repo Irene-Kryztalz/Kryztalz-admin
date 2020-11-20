@@ -6,7 +6,7 @@ const Overlay = styled.div`
    left:0;
    z-index:calc( 10 * var(--z) );
    width:100vw;
-   min-height:100%;
+   height:100vh;
    background-color: var(--purple-transparent)
 
 `;
