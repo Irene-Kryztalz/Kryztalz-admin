@@ -1,20 +1,28 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import Field from "../Inputs/Field";
 import Button from "../Button";
 import Title from "../Title";
+import ScrollToTop from "../ScrollToTop";
 import classes from './GemUpload.module.css';
 
 import { PageError } from "../Errors/Errors";
 
 function GemUpload ( { fields, ...props } ) 
 {
+    const history = useHistory();
     return (
         <>
+            <ScrollToTop />
             <Title>{ props.title }</Title>
             {
                 props.error && <PageError message={ props.error } />
 
             }
+
+            &nbsp;&nbsp;&nbsp; <Button onClick={ () => history.goBack() } >Go back</Button>
+            <br /> <br />
+
             <form
                 className={ classes.FormContainer }
                 encType="multipart/form-data"

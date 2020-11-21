@@ -12,6 +12,18 @@
    justify-self: center;
 }
 
+.Preview
+{
+    color: var(--gold);
+    margin: 10px 0px;
+    font-style: italic;
+}
+
+.Preview q
+{
+    font-style: normal;
+}
+
 
 @media screen and (min-width:400px)
 {

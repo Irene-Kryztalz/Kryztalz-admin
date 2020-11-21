@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AppContext from "../../../Context";
 import Chart from "../../../components/Chart";
+import ScrollToTop from "../../../components/ScrollToTop";
 import { PageError } from "../../../components/Errors/Errors";
 import styles from "./Overview.module.css";
 
@@ -63,6 +64,7 @@ function Overview ()
 
     return (
         <>
+            <ScrollToTop />
             <h2 className={ styles.Title } >
                 Welcome, { user.name }
             </h2>
