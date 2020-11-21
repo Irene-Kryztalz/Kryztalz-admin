@@ -61,8 +61,6 @@ function Overview ()
     }, [ makeRequest, logout ] );
 
 
-
-
     return (
         <>
             <h2 className={ styles.Title } >
@@ -82,6 +80,8 @@ function Overview ()
 
                         </div>
 
+
+
                         <section className={ styles.ChartFlex }>
                             <Chart
                                 percent
@@ -96,6 +96,7 @@ function Overview ()
                                 total={ getTotal( overview.gemDistByCut ) }
                                 label="Gem distribution by cut" />
                         </section>
+
 
 
                         <section className={ styles.ChartFlex }>

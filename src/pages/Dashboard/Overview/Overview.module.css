@@ -21,16 +21,6 @@
     text-align: center;
 }
 
-.CountText
-{
-    
-}
-
-.Count
-{
-
-}
-
 .ChartFlex
 {
     display: flex;
@@ -46,6 +36,8 @@
     
     padding: 10px 30px 10px 10px;
 }
+
+
 
 
 @media screen and (min-width:768px)
