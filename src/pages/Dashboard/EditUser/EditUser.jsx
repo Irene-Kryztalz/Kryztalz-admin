@@ -7,6 +7,7 @@ import Field from "../../../components/Inputs/Field";
 import Title from "../../../components/Title";
 import UserCard from "../../../components/UserCard/UserCard";
 import PermForm from "../../../components/PermForm/PermForm";
+import ScrollToTop from "../../../components/ScrollToTop";
 
 import { PageError } from "../../../components/Errors/Errors";
 
@@ -331,6 +332,7 @@ function EditUser ()
 
     return (
         <>
+            <ScrollToTop />
             <Title>Edit User</Title>
             <section className={ classes.Group }>
                 <Field
