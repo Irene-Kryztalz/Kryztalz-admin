@@ -22,8 +22,10 @@ function GemList ()
             gems,
             makeRequest,
             setGems,
+            loading,
             logout
         } = useContext( AppContext );
+    const [ hasL, setHasL ] = useState( false );
     const [ error, setError ] = useState( null );
     const [ activeGem, setActiveGem ] = useState( null );
 
@@ -85,7 +87,7 @@ function GemList ()
         async () =>
         {
 
-
+            setHasL( true );
             setError( null );
             let response;
 
@@ -135,12 +137,12 @@ function GemList ()
 
     useEffect( () => 
     {
-        if ( !gems.length ) 
+        if ( !gems.length && !hasL ) 
         {
             setTimeout( getGems, 500 );
         }
 
-    }, [ gems, makeRequest, setGems, getGems ] );
+    }, [ gems, getGems, hasL ] );
 
     const goTo = async id =>
     {
@@ -176,7 +178,7 @@ function GemList ()
     return (
         <div >
 
-            { !gems.length && <div className={ classes.Nothing }>
+            { !gems.length && !loading && <div className={ classes.Nothing }>
                 <h1  >Nothing to see here</h1>
 
                 <Button onClick={ getGems } >Try again</Button>

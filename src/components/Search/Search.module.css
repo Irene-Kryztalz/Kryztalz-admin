@@ -1,0 +1,39 @@
+.SearchBar
+{
+  margin: 10px;
+  color: var(--gold) ;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.Search
+{
+  margin-top: 10px;
+  flex: 0 0 100%;
+  padding: 5px 10px;
+}
+
+@media screen and (min-width:768px)
+{
+    .SearchBar
+    { 
+        justify-content: start;
+    }
+
+    .Search
+    {
+         flex: 0 0 70%;
+         max-width: 600px;
+         margin-left: 20px;
+         margin-top: 0;
+    }
+
+    .Label
+    {
+        border-bottom: 1px solid var(--purple);
+        padding-bottom: 5px;
+        font-size: 1.25rem;
+    }
+}

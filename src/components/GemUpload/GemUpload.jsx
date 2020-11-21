@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 import Field from "../Inputs/Field";
 import Button from "../Button";
 import Title from "../Title";
@@ -8,6 +9,7 @@ import { PageError } from "../Errors/Errors";
 
 function GemUpload ( { fields, ...props } ) 
 {
+    const history = useHistory();
     return (
         <>
             <Title>{ props.title }</Title>
@@ -15,6 +17,10 @@ function GemUpload ( { fields, ...props } )
                 props.error && <PageError message={ props.error } />
 
             }
+
+            &nbsp;&nbsp;&nbsp; <Button onClick={ () => history.goBack() } >Go back</Button>
+            <br /> <br />
+
             <form
                 className={ classes.FormContainer }
                 encType="multipart/form-data"
