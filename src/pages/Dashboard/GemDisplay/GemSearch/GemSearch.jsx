@@ -5,6 +5,7 @@ import Overlay from "../../../../components/Overlay";
 import Button from "../../../../components/Button";
 import GemCard from "../../../../components/GemCard/GemCard";
 
+import LoadMore from "../../../../components/LoadMore/LoadMore";
 
 import classes from '../GemList/GemList.module.css';
 
@@ -91,6 +92,7 @@ function GemSearch ()
     const getGems = useCallback(
         async ( reload ) =>
         {
+
             setLast( term );
             setHasL( true );
             setError( null );
@@ -232,8 +234,10 @@ function GemSearch ()
             </section>
 
             {
-                ( count > gems.length ) && <Button onClick={ getGems } >Load more</Button>
+                ( count > gems.length ) && <LoadMore loading={ pageLoad } click={ () => getGems( false ) } />
             }
+
+
 
             {
                 activeGem && ( !error ) && <Overlay onClick={ toggleModal } >
