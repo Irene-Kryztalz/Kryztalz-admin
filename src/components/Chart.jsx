@@ -46,14 +46,27 @@ const colorsByCut =
 
 };
 
+const formatTicks = ( tick, byCut ) =>
+{
+    tick = tick.toUpperCase();
+
+    if ( byCut && tick.includes( "(" ) )
+    {
+        return "CU";
+    }
+
+    return tick.substr( 0, 2 );
+};
+
 const transformData = ( data, total ) =>
 {
+
     return data.map( d =>
     {
         return {
             count: ( 100 * ( d.count / total ) ),
             _id: d._id,
-            label: `${ d.count } out of ${ total }`
+            label: `${ d._id.toUpperCase() }\n${ d.count } out of ${ total }`
         };
     } );
 };
@@ -89,7 +102,7 @@ function Chart ( { data, byCut = true, label, total } )
                         } }
 
                     label={ label }
-                    tickLabelComponent={ <VictoryLabel dx={ 10 } dy={ 5 } angle={ 20 } /> }
+                    tickFormat={ ( t ) => formatTicks( t ) }
                     axisLabelComponent={ <VictoryLabel dy={ -250 } /> }
                 />
 
