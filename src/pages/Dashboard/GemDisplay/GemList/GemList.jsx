@@ -6,6 +6,7 @@ import AppContext from "../../../../Context";
 import Overlay from "../../../../components/Overlay";
 import Button from "../../../../components/Button";
 import GemCard from "../../../../components/GemCard/GemCard";
+import LoadMore from "../../../../components/LoadMore/LoadMore";
 import classes from './GemList.module.css';
 
 function numWithComma ( num ) 
@@ -28,6 +29,7 @@ function GemList ()
     const [ hasL, setHasL ] = useState( false );
     const [ error, setError ] = useState( null );
     const [ activeGem, setActiveGem ] = useState( null );
+    const [ showLoader, setShowLoader ] = useState( false );
 
     const toggleModal = ( e, gem ) =>
     {
@@ -87,6 +89,7 @@ function GemList ()
         async () =>
         {
 
+            setShowLoader( true );
             setHasL( true );
             setError( null );
             let response;
@@ -128,8 +131,11 @@ function GemList ()
             }
             else
             {
+
                 setGems( data.gems, data.count );
             }
+
+            setShowLoader( false );
 
         },
         [ makeRequest, setGems, setError, gems, logout ],
@@ -175,6 +181,8 @@ function GemList ()
     };
 
 
+
+
     return (
         <div >
 
@@ -202,7 +210,7 @@ function GemList ()
             </section>
 
             {
-                ( count > gems.length ) && <Button onClick={ getGems } >Load more</Button>
+                ( count > gems.length ) && <LoadMore loading={ showLoader } click={ getGems } />
             }
 
             {
