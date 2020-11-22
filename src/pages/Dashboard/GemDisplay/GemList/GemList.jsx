@@ -180,9 +180,6 @@ function GemList ()
 
     };
 
-
-
-
     return (
         <div >
 

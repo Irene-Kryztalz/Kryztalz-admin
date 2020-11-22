@@ -17,6 +17,7 @@
     color: var(--gold);
     margin: 10px 0px;
     font-style: italic;
+    padding-left: 10px;
 }
 
 .Preview q
