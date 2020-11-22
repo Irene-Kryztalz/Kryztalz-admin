@@ -9,7 +9,7 @@ function Overview ()
 {
     const [ overview, setOverview ] = useState( {} );
     const [ error, setError ] = useState( null );
-    const { user, makeRequest, logout } = useContext( AppContext );
+    const { user, makeRequest, logout, loading } = useContext( AppContext );
 
     const getTotal = collection =>
     {
@@ -75,14 +75,14 @@ function Overview ()
                     <PageError message={ error } />
                     :
                     <>
-                        <div className={ styles.GemCount }>
+                        {
+                            !loading && <div className={ styles.GemCount }>
 
-                            <p className={ styles.CountText }>Total number of gems in database</p>
-                            <p className={ styles.Count } >{ overview.gemCount }</p>
+                                <p className={ styles.CountText }>Total number of gems in database</p>
+                                <p className={ styles.Count } >{ overview.gemCount }</p>
 
-                        </div>
-
-
+                            </div>
+                        }
 
                         <section className={ styles.ChartFlex }>
                             <Chart

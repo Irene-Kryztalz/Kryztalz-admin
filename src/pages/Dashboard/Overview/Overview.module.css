@@ -14,11 +14,27 @@
 {
     background-color: var(--form-bg);
     padding: 10px;
-    margin: 10px;
+    max-width: 500px;
+    width: 100%;
+    margin: 10px auto;
+    color: var(--gold);
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(2,1fr);
     text-align: center;
+}
+
+.CountText
+{
+    font-family:"'Croissant One'", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, cursive;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.Count
+{
+    font-size: 5rem;
+    font-family: "Crimson Pro", 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .ChartFlex
@@ -48,10 +64,6 @@
         margin: 20px 0px;
     }
 
-    .GemCount
-    {
-        margin-left: 0px;
-    }
 
     .ChartFlex > div
     {
