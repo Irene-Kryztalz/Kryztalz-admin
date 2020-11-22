@@ -51,7 +51,36 @@ function Dashboard ()
                     </Route>
 
                 </Switch>
+
+
+                <footer>
+                    <p className={ classes.Copyright }>
+                        Copyright &copy; { new Date().getFullYear() } &nbsp;&nbsp;
+                        <a href="https://github.com/Irene-Kryztalz/Kryztalz-admin" target="_blank" rel="noopener noreferrer">
+                            Irene-24 </a>
+                    </p>
+
+                    <p className={ classes.Disclaimer }>
+
+                        All images displayed on this application belong to their respective owners.
+
+                        <br /><br />
+
+                        Kryztalz and the owners of this site are not liable for anything.
+
+                        <br /><br />
+
+                        All information about gems here was sourced from the internet.
+
+                        <br /><br />
+
+                         This application is simply an intellectual excercise.
+
+                    </p>
+                </footer>
             </section>
+
+
         </div>
     );
 }
