@@ -142,7 +142,7 @@ class AppProvider extends Component
         this.setState( { isAuth: false } );
     };
 
-    setGems = ( items, count ) =>
+    setGems = ( items, count, isDelete ) =>
     {
         let gems;
         if ( !Array.isArray( items ) )
@@ -158,7 +158,7 @@ class AppProvider extends Component
             }
 
         }
-        else if ( count && count < this.state.count )
+        else if ( isDelete )
         {
 
             gems = [ ...items ];
