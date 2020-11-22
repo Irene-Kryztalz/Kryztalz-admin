@@ -92,7 +92,7 @@ button:focus
 
 input[type="file"]
 {
-    visibility: hidden;
+    opacity: 0;
 }
 
 
