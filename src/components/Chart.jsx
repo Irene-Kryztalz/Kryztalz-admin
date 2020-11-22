@@ -36,7 +36,7 @@ const colorsByCut =
     "heart": "#317F43",
     "marquise": "#B32428",
     "octagon": "#3B83BD",
-    "oval": "#CAC4B0",
+    "oval": "#47449f",
     "drop": "#ffdf1d",
     "princess": "#EAE6CA",
     "radiant": "#2271B3",

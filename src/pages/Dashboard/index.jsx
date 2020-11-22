@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import SideDrawer from "../../components/SideDrawer";
@@ -21,6 +21,21 @@ function Dashboard ()
     {
         setIsOpen( !isOpen );
     };
+
+    useEffect( () => 
+    {
+        window.addEventListener( "resize", () =>
+        {
+            if ( window.innerWidth < 768 )
+            {
+                setIsOpen( false );
+            }
+        } );
+        return () =>
+        {
+            window.removeEventListener( "resize" );
+        };
+    }, [ setIsOpen ] );
 
 
     return (
