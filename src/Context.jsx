@@ -42,46 +42,6 @@ class AppProvider extends Component
 
     }
 
-    getPerms = async ( baseUrl ) => 
-    {
-        const token = localStorage.getItem( "kryztalz-token" );
-
-        fetch( `${ baseUrl }/admin/permissions`,
-            {
-                headers:
-                {
-                    Authorization: `Bearer ${ token }`
-                }
-            } )
-            .then( res => res.json() )
-            .then( perms => 
-            {
-                const permissions = [];
-                if ( !perms.error )
-                {
-
-                    for ( const perm in perms ) 
-                    {
-                        const p =
-                        {
-                            name: perm.replace( /_/ig, " " ),
-                            slug: perm,
-                            id: perms[ perm ]
-                        };
-
-                        permissions.push( p );
-                    }
-
-                    this.setState( { permissions } );
-                }
-
-            } )
-            .catch( e => 
-            {
-                this.setState( { permissions: { error: e.error } } );
-            } );
-    };
-
 
     makeRequest = async ( { endpoint, formData, method = "GET", headers }, loader = true ) =>
     {
@@ -221,8 +181,7 @@ class AppProvider extends Component
                     login: this.login,
                     makeRequest: this.makeRequest,
                     logout: this.logout,
-                    setGems: this.setGems,
-                    getPerms: this.getPerms
+                    setGems: this.setGems
                 } }>
                 { this.props.children }
             </AppContext.Provider>

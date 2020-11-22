@@ -16,7 +16,7 @@ function GemCard ( props )
 
                 <div className={ classes.Info }>
                     <h3 className={ classes.Title }>{ name }</h3>
-                    <p className={ classes.Price }>₦ { price }</p>
+                    <p className={ classes.Price }>₦ { price } per unit</p>
                     <p className={ classes.Type }>{ type }</p>
                 </div>
 
