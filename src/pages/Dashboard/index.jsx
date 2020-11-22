@@ -57,7 +57,7 @@ function Dashboard ()
                     <p className={ classes.Copyright }>
                         Copyright &copy; { new Date().getFullYear() } &nbsp;&nbsp;
                         <a href="https://github.com/Irene-Kryztalz/Kryztalz-admin" target="_blank" rel="noopener noreferrer">
-                            Irene-24 </a>
+                            Kryztalz </a>
                     </p>
 
                     <p className={ classes.Disclaimer }>
@@ -65,6 +65,10 @@ function Dashboard ()
                         All images displayed on this application belong to their respective owners.
 
                         <br /><br />
+
+Logo belongs to me though, as well as the name <q>Kryztalz</q>
+
+                        <br /> <br />
 
                         Kryztalz and the owners of this site are not liable for anything.
 
