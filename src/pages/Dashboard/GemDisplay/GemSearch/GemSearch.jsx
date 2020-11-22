@@ -163,7 +163,7 @@ function GemSearch ()
 
         if ( term !== last )
         {
-            console.log( term, last );
+
             setGems( [] );
             getGems( true );
         }

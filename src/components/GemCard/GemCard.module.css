@@ -7,6 +7,9 @@
    
     border-radius: 10px;
     background-color: var(--gold);
+    background-image: url("../../assets/images/logo-small.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
@@ -17,6 +20,11 @@
     max-height: 240px;
     box-shadow: 1px 1px 2px 2px var(--bg);
     background-color: var(--blue);
+    background-image: url("../../assets/images/logo-mono.svg");
+    background-size: 90px;
+    background-position: center;
+    background-repeat: no-repeat;
+    
 }
 
 

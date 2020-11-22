@@ -56,7 +56,7 @@ const reducer = ( state, action ) =>
 
 function EditUser () 
 {
-    const { getPerms, permissions, makeRequest, logout } = useContext( AppContext );
+    const { makeRequest, logout } = useContext( AppContext );
     const [ state, dispatch ] = useReducer( reducer,
         {
             last: "",
@@ -72,11 +72,6 @@ function EditUser ()
 
     const [ showForm, setShowForm ] = useState( false );
     const [ config, setConfig ] = useState( {} );
-
-    if ( permissions.length < 1 )
-    {
-        getPerms();
-    }
 
     const changeEmail = ( e ) =>
     {
@@ -141,9 +136,23 @@ function EditUser ()
                 dispatch(
                     {
                         type: "setUser",
-                        payload: data
+                        payload: data.user
                     } );
-                genPerms( data.roleId );
+
+                const permissions = [];
+                for ( const perm in data.permissions ) 
+                {
+                    const p =
+                    {
+                        name: perm.replace( /_/ig, " " ),
+                        slug: perm,
+                        id: data.permissions[ perm ]
+                    };
+
+                    permissions.push( p );
+                }
+
+                genPerms( data.user.roleId, permissions );
             }
         }
         else
@@ -166,10 +175,11 @@ function EditUser ()
 
     };
 
-    const genPerms = ( roleId ) =>
+    const genPerms = ( roleId, permissions ) =>
     {
         const allowed = [];
         const notAllowed = [];
+
 
         permissions.forEach( perm =>
         {
@@ -330,6 +340,16 @@ function EditUser ()
 
     };
 
+    const keyPressHandler = ( e ) =>
+    {
+        const code = ( e.keyCode ? e.keyCode : e.which );
+        if ( code === 13 )
+        {
+            searchUser();
+        }
+
+    };
+
     return (
         <>
             <ScrollToTop />
@@ -343,6 +363,7 @@ function EditUser ()
                     placeholder="Enter email..."
                     classNamesInput={ classes.Input }
                     classNamesLabel={ classes.Label }
+                    keypress={ keyPressHandler }
                 />
                 <Button onClick={ searchUser } >Search</Button>
             </section>

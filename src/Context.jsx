@@ -12,7 +12,6 @@ class AppProvider extends Component
             loading: false,
             isAuth: false,
             baseUrl: "",
-            permissions: [],
             user: {},
             count: 0
 
@@ -39,7 +38,6 @@ class AppProvider extends Component
             const user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
 
             this.setState( { isAuth: true, user } );
-            this.getPerms( base );
         }
 
     }
