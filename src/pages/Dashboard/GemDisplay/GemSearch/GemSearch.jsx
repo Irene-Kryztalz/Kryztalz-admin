@@ -225,6 +225,7 @@ function GemSearch ()
                         key={ gem._id }
                         _id={ gem._id }
                         name={ gem.name }
+                        cutType={ gem.cutType }
                         price={ numWithComma( gem.price ) }
                         image={ gem.imageUrls[ 0 ] }
                         setActiveGem={ toggleModal }

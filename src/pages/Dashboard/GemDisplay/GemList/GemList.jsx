@@ -202,6 +202,7 @@ function GemList ()
                         price={ numWithComma( gem.price ) }
                         image={ gem.imageUrls[ 0 ] }
                         setActiveGem={ toggleModal }
+                        cutType={ gem.cutType }
                         type={ gem.type } /> )
                 }
 

@@ -4,7 +4,7 @@ import Button from "../Button";
 
 function GemCard ( props )
 {
-    const { name, price, image, type, _id, setActiveGem, goTo } = props;
+    const { name, price, image, type, _id, setActiveGem, cutType, goTo } = props;
     return (
         <article className={ classes.Card }>
 
@@ -16,7 +16,9 @@ function GemCard ( props )
 
                 <div className={ classes.Info }>
                     <h3 className={ classes.Title }>{ name }</h3>
-                    <p className={ classes.Price }>₦ { price } per unit</p>
+                    <p className={ classes.Price }>
+                        ₦ { price } per { cutType === "none" ? "gram" : "carat" }
+                    </p>
                     <p className={ classes.Type }>{ type }</p>
                 </div>
 
