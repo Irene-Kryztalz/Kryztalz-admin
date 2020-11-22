@@ -57,7 +57,7 @@ function Dashboard ()
                     <p className={ classes.Copyright }>
                         Copyright &copy; { new Date().getFullYear() } &nbsp;&nbsp;
                         <a href="https://github.com/Irene-Kryztalz/Kryztalz-admin" target="_blank" rel="noopener noreferrer">
-                            Irene-24 </a>
+                            Kryztalz </a>
                     </p>
 
                     <p className={ classes.Disclaimer }>
