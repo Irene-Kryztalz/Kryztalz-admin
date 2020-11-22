@@ -66,6 +66,10 @@ function Dashboard ()
 
                         <br /><br />
 
+Logo belongs to me though, as well as the name <q>Kryztalz</q>
+
+                        <br /> <br />
+
                         Kryztalz and the owners of this site are not liable for anything.
 
                         <br /><br />
