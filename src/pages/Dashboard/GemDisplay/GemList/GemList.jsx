@@ -78,7 +78,7 @@ function GemList ()
         {
             const filteredGems = gems.filter( g => g._id !== activeGem._id );
 
-            setGems( filteredGems, count - 1 );
+            setGems( filteredGems, count - 1, true );
             setActiveGem( null );
         }
 

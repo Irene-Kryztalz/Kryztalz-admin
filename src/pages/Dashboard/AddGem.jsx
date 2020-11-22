@@ -111,8 +111,8 @@ function AddGem ()
         const response = await makeRequest(
             {
                 endpoint: "admin/gems",
-                method: "POST",
-                formData,
+                method: "post",
+                formData
             } );
 
 
