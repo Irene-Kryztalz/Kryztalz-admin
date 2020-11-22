@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import AppContext from "../../../../Context";
 import Overlay from "../../../../components/Overlay";
 import Button from "../../../../components/Button";
+import ScrollToTop from "../../../../components/ScrollToTop";
 import GemCard from "../../../../components/GemCard/GemCard";
 import LoadMore from "../../../../components/LoadMore/LoadMore";
 import classes from './GemList.module.css';
@@ -212,7 +213,7 @@ function GemList ()
 
             {
                 activeGem && ( !error ) && <Overlay onClick={ toggleModal } >
-
+                    <ScrollToTop />
                     <section className={ classes.Modal } >
                         <article className={ classes.ModalBody }>
                             <h2>Are you sure you want to delete this gem ?</h2>
@@ -256,7 +257,7 @@ function GemList ()
 
             {
                 error && <Overlay onClick={ toggleModal } >
-
+                    <ScrollToTop />
                     <section className={ classes.Modal } >
                         <article className={ classes.ModalBody }>
                             <h2>Error !!</h2>

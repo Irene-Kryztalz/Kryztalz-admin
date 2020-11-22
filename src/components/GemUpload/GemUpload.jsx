@@ -16,7 +16,7 @@ function GemUpload ( { fields, ...props } )
             <ScrollToTop />
             <Title>{ props.title }</Title>
             {
-                props.error && <PageError message={ props.error } />
+                props.error && <> <ScrollToTop /> <PageError message={ props.error } /> </>
 
             }
 
