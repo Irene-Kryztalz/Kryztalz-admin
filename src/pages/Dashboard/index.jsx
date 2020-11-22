@@ -7,6 +7,7 @@ import EditGem from "./EditGem";
 import EditUser from "./EditUser/EditUser";
 import Overview from "./Overview/Overview";
 import GemDisplay from "./GemDisplay";
+import Page404 from "./Page404/Page404";
 
 import { joinClasses } from "../../utils/joinClasses";
 import classes from "./index.module.css";
@@ -47,7 +48,7 @@ function Dashboard ()
                     </Route>
 
                     <Route path="/*">
-                        <h1>Not Found</h1>
+                        <Page404 />
                     </Route>
 
                 </Switch>

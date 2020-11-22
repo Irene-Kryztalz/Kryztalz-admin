@@ -1,0 +1,32 @@
+.Flex
+{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--gold);
+    font-family: 'Crimson Pro', serif;
+}
+
+.Flex i 
+{
+    display: block;
+    font-size: 12rem;
+    margin-bottom: 20px;
+}
+
+.Flex h2
+{
+    font-size: 4rem;
+    letter-spacing: 6px;
+}
+
+
+.Flex p
+{
+    font-size: 1.52rem;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
