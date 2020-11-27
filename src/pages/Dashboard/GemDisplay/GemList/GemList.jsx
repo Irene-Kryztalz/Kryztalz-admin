@@ -129,7 +129,7 @@ function GemList ()
     {
         if ( !gems.length && !hasL ) 
         {
-            setTimeout( getGems, 500 );
+            getGems();
         }
 
     }, [ gems, getGems, hasL ] );
