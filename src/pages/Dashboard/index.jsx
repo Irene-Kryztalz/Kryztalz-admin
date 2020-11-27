@@ -52,21 +52,24 @@ function Dashboard ()
                     isOpen={ isOpen } />
             </aside>
             <section >
-                <Switch>
-                    <Route exact path="/home" component={ Overview } />
-                    <Route exact path="/add-gem" component={ AddGem } />
-                    <Route exact path="/edit-gem/:id" component={ EditGem } />
-                    <Route exact path="/edit-permissions" component={ EditUser } />
-                    <Route path="/all-gems" component={ GemDisplay } />
-                    <Route exact path="/">
-                        <Redirect to="/home" />
-                    </Route>
+                <div className={ classes.Content } >
+                    <Switch>
+                        <Route exact path="/home" component={ Overview } />
+                        <Route exact path="/add-gem" component={ AddGem } />
+                        <Route exact path="/edit-gem/:id" component={ EditGem } />
+                        <Route exact path="/edit-permissions" component={ EditUser } />
+                        <Route path="/all-gems" component={ GemDisplay } />
+                        <Route exact path="/">
+                            <Redirect to="/home" />
+                        </Route>
 
-                    <Route path="/*">
-                        <Page404 />
-                    </Route>
+                        <Route path="/*">
+                            <Page404 />
+                        </Route>
 
-                </Switch>
+                    </Switch>
+                </div>
+
 
 
                 <footer>

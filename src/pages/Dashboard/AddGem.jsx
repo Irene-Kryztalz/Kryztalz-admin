@@ -108,39 +108,30 @@ function AddGem ()
 
         }
 
-        const response = await makeRequest(
+        const { data, error } = await makeRequest(
             {
                 endpoint: "admin/gems",
                 method: "post",
                 formData
             } );
 
-
-
-        if ( response.error )
+        if ( error )
         {
-            if ( typeof response.error === "object" )
+            if ( error.includes( "expire" ) )
             {
-                setError( response.error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( response.error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( response.error );
-            }
+            setError( error );
+
         }
         else
         {
             setWillAdd( false );
             reset();
-            setGems( [ response.data ] );
+            setGems( [ data ] );
 
         }
-
 
     };
 

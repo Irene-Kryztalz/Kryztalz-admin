@@ -60,19 +60,14 @@ function GemList ()
 
         if ( error )
         {
-            if ( typeof error === "object" )
+
+            if ( error.includes( "expire" ) )
             {
-                setError( error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( error );
-            }
+            setError( error );
+
         }
         else
         {
@@ -82,14 +77,11 @@ function GemList ()
             setActiveGem( null );
         }
 
-
-
     };
 
     const getGems = useCallback(
         async () =>
         {
-
             setShowLoader( true );
             setHasL( true );
             setError( null );
@@ -115,24 +107,15 @@ function GemList ()
 
             if ( error )
             {
-                if ( typeof error === "object" )
+                if ( error.includes( "expire" ) )
                 {
-                    setError( error.error );
+                    logout();
+                    return;
                 }
-                else
-                {
-
-                    if ( error.includes( "expire" ) )
-                    {
-                        logout();
-                        return;
-                    }
-                    setError( error );
-                }
+                setError( error );
             }
             else
             {
-
                 setGems( data.gems, data.count );
             }
 
@@ -160,19 +143,13 @@ function GemList ()
 
         if ( error )
         {
-            if ( typeof error === "object" )
+            if ( error.includes( "expire" ) )
             {
-                setError( error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( error );
-            }
+            setError( error );
+
         }
         else
         {

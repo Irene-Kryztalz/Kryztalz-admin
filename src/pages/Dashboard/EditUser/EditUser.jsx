@@ -69,7 +69,7 @@ function EditUser ()
             show: false,
             mode: null
         } );
-
+    const [ permissions, setPerms ] = useState( [] );
     const [ showForm, setShowForm ] = useState( false );
     const [ config, setConfig ] = useState( {} );
 
@@ -99,7 +99,7 @@ function EditUser ()
                     payload: email
                 } );
 
-            const response = await makeRequest(
+            const { error, data } = await makeRequest(
                 {
                     endpoint: "admin/user",
                     method: "POST",
@@ -110,29 +110,17 @@ function EditUser ()
                     formData: JSON.stringify( { email } )
                 } );
 
-            if ( response.error )
+            if ( error )
             {
-                if ( typeof response.error === "object" )
-                {
-                    dispatch(
-                        {
-                            type: "setError",
-                            payload: response.error.error
-                        } );
-                }
-                else
-                {
-                    dispatch(
-                        {
-                            type: "setError",
-                            payload: response.error
-                        } );
-                }
+                dispatch(
+                    {
+                        type: "setError",
+                        payload: error
+                    } );
 
             }
             else
             {
-                const { data } = response;
                 dispatch(
                     {
                         type: "setUser",
@@ -152,6 +140,7 @@ function EditUser ()
                     permissions.push( p );
                 }
 
+                setPerms( permissions );
                 genPerms( data.user.roleId, permissions );
             }
         }
@@ -179,7 +168,6 @@ function EditUser ()
     {
         const allowed = [];
         const notAllowed = [];
-
 
         permissions.forEach( perm =>
         {
@@ -222,7 +210,7 @@ function EditUser ()
                 endpoint = "admin/remove-permission";
             }
 
-            const response = await makeRequest(
+            const { error, data } = await makeRequest(
                 {
                     endpoint,
                     formData: JSON.stringify( payload ),
@@ -233,46 +221,34 @@ function EditUser ()
                     }
                 } );
 
-            if ( response.error )
+            if ( error )
             {
-                if ( typeof response.error === "object" )
-                {
-                    dispatch(
-                        {
-                            type: "setError",
-                            payload: response.error.error
-                        } );
-                }
-                else
-                {
 
-                    if ( response.error.includes( "expire" ) )
-                    {
-                        logout();
-                        return;
-                    }
-                    dispatch(
-                        {
-                            type: "setError",
-                            payload: response.error
-                        } );
+                if ( error.includes( "expire" ) )
+                {
+                    logout();
+                    return;
                 }
+                dispatch(
+                    {
+                        type: "setError",
+                        payload: error
+                    } );
+
 
             }
             else
             {
-                const user = response.data;
                 dispatch(
                     {
                         type: "setUser",
-                        payload: user
+                        payload: data
                     } );
-                genPerms( user.roleId );
+                genPerms( data.roleId, permissions );
                 setShowForm( false );
             }
             return;
         }
-
         setShowForm( false );
 
     };

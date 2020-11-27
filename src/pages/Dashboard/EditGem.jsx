@@ -96,8 +96,6 @@ const formConfig = ( data ) =>
 
     }
 
-
-
     return config;
 
 };
@@ -110,7 +108,6 @@ function EditGem ()
     let [ formState, changeHandler, reset ] = useForm( formConfig( state ), true );
 
     const [ editDone, setEditDone ] = useState( true );
-
 
     const handleSubmit = async ( ev ) =>
     {
@@ -162,22 +159,15 @@ function EditGem ()
             }
         );
 
-
         if ( error )
         {
-            if ( typeof error === "object" )
+            if ( error.includes( "expire" ) )
             {
-                setError( error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( error );
-            }
+            setError( error );
+
         }
         else
         {
@@ -200,8 +190,6 @@ function EditGem ()
             handler={ goTo }
             message="Gem successfully edited" />;
     }
-
-
 
     return (
         <GemUpload

@@ -64,7 +64,6 @@ class AppProvider extends Component
 
         try 
         {
-
             if ( method === "GET" )
             {
                 response = await Promise.race( [ fetch( `${ url }/${ endpoint }`,
@@ -72,7 +71,6 @@ class AppProvider extends Component
                         headers
                     } ), new Promise( ( _, reject ) => setTimeout( () => reject( new Error( "Timeout" ) )
                         , timeOut ) ) ] );
-
 
             }
             else
@@ -92,11 +90,11 @@ class AppProvider extends Component
             }
             else
             {
-
                 this.setState( { loading: false } );
+                const e = await response.json();
                 return {
                     code: response.status,
-                    error: await response.json()
+                    error: e.error
                 };
             }
 
@@ -112,7 +110,6 @@ class AppProvider extends Component
             };
 
         }
-
 
     };
 
@@ -147,10 +144,8 @@ class AppProvider extends Component
         let gems;
         if ( !Array.isArray( items ) )
         {
-
             gems = [ ...this.state.gems ];
             const editedGemIndex = gems.findIndex( g => g._id === items._id );
-
 
             if ( editedGemIndex > -1 )
             {
@@ -160,12 +155,10 @@ class AppProvider extends Component
         }
         else if ( isDelete )
         {
-
             gems = [ ...items ];
         }
         else
         {
-
             gems = [ ...this.state.gems, ...items ];
         }
 

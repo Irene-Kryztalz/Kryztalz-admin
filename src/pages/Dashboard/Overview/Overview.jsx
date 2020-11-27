@@ -17,8 +17,6 @@ function Overview ()
         {
             const total = collection.reduce( ( sum, item ) => sum += item.count, 0 );
             return total;
-
-
         }
 
         return 1;
@@ -35,20 +33,12 @@ function Overview ()
 
             if ( error )
             {
-                if ( typeof error === "object" )
+                if ( error.includes( "expire" ) )
                 {
-                    setError( error.error );
+                    logout();
+                    return;
                 }
-                else
-                {
-
-                    if ( error.includes( "expire" ) )
-                    {
-                        logout();
-                        return;
-                    }
-                    setError( error );
-                }
+                setError( error );
             }
             else
             {
@@ -60,7 +50,6 @@ function Overview ()
         setTimeout( getOverview, 500 );
 
     }, [ makeRequest, logout ] );
-
 
     return (
         <>
