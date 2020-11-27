@@ -83,11 +83,11 @@ function Dashboard ()
 
                     <p className={ classes.Disclaimer }>
 
-                        All images displayed on this application belong to their respective owners.
+                        All images and icons displayed on this application belong to their respective owners.
 
                         <br /><br />
 
-Logo belongs to me though, as well as the name <q>Kryztalz</q>
+Logo design belongs to me however.
 
                         <br /> <br />
 
