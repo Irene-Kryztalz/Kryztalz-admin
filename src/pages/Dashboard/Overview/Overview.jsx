@@ -47,7 +47,7 @@ function Overview ()
 
         };
 
-        setTimeout( getOverview, 500 );
+        getOverview();
 
     }, [ makeRequest, logout ] );
 
