@@ -24,16 +24,18 @@ function Dashboard ()
 
     useEffect( () => 
     {
-        window.addEventListener( "resize", () =>
+        const resize = () =>
         {
             if ( window.innerWidth < 768 )
             {
                 setIsOpen( false );
             }
-        } );
+        };
+
+        window.addEventListener( "resize", resize );
         return () =>
         {
-            window.removeEventListener( "resize" );
+            window.removeEventListener( "resize", resize );
         };
     }, [ setIsOpen ] );
 
