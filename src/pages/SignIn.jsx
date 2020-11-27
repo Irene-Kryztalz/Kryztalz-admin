@@ -47,7 +47,7 @@ function SignIn ()
         ev.preventDefault();
         const formData = extractFormData( formState.state );
 
-        const response = await makeRequest(
+        const { error, data } = await makeRequest(
             {
                 endpoint: "admin/signin",
                 formData: JSON.stringify( formData ),
@@ -58,21 +58,15 @@ function SignIn ()
                 }
             } );
 
-        if ( response.error )
-        {
-            if ( typeof response.error === "object" )
-            {
-                setError( response.error.error );
-            }
-            else
-            {
-                setError( response.error );
-            }
+        console.log( error );
 
+        if ( error )
+        {
+            setError( error );
         }
         else
         {
-            login( response.data.user );
+            login( data.user );
         }
 
     };

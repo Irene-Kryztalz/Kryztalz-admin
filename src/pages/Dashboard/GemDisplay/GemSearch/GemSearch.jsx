@@ -46,19 +46,13 @@ function GemSearch ()
 
         if ( error )
         {
-            if ( typeof error === "object" )
+            if ( error.includes( "expire" ) )
             {
-                setError( error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( error );
-            }
+            setError( error );
+
         }
         else
         {
@@ -86,13 +80,11 @@ function GemSearch ()
             setActiveGem( null );
         }
 
-
     };
 
     const getGems = useCallback(
         async ( reload ) =>
         {
-
             setLast( term );
             setHasL( true );
             setError( null );
@@ -116,23 +108,16 @@ function GemSearch ()
             }
 
             const { error, data } = response;
+            setPageLoad( false );
 
             if ( error )
             {
-                if ( typeof error === "object" )
+                if ( error.includes( "expire" ) )
                 {
-                    setError( error.error );
+                    logout();
+                    return;
                 }
-                else
-                {
-
-                    if ( error.includes( "expire" ) )
-                    {
-                        logout();
-                        return;
-                    }
-                    setError( error );
-                }
+                setError( error );
             }
             else
             {
@@ -145,7 +130,6 @@ function GemSearch ()
                     setGems( [] );
                 }
                 setCount( data.count );
-                setPageLoad( false );
 
             }
 
@@ -155,7 +139,6 @@ function GemSearch ()
 
     useEffect( () => 
     {
-
         if ( !gems.length && !hasL ) 
         {
             getGems();
@@ -163,7 +146,6 @@ function GemSearch ()
 
         if ( term !== last )
         {
-
             setGems( [] );
             getGems( true );
         }
@@ -179,19 +161,13 @@ function GemSearch ()
 
         if ( error )
         {
-            if ( typeof error === "object" )
+            if ( error.includes( "expire" ) )
             {
-                setError( error.error );
+                logout();
+                return;
             }
-            else
-            {
-                if ( error.includes( "expire" ) )
-                {
-                    logout();
-                    return;
-                }
-                setError( error );
-            }
+            setError( error );
+
         }
         else
         {
@@ -299,10 +275,6 @@ function GemSearch ()
                             </div>
 
                             <p className={ classes.Error } >{ error }</p>
-
-
-
-
 
                             <div className={ classes.Btns }>
 
