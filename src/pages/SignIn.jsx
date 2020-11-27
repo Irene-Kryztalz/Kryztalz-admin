@@ -58,8 +58,6 @@ function SignIn ()
                 }
             } );
 
-        console.log( error );
-
         if ( error )
         {
             setError( error );
