@@ -127,12 +127,15 @@ function GemList ()
 
     useEffect( () => 
     {
+        console.log( 10 );
         if ( !gems.length && !hasL ) 
         {
             getGems();
         }
 
     }, [ gems, getGems, hasL ] );
+
+
 
     const goTo = async id =>
     {

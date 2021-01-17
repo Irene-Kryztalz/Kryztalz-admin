@@ -28,17 +28,18 @@ class AppProvider extends Component
         } else
         {
             base = process.env.REACT_APP_SERVER;
+            fetch( `${ base }/` )
+                .then( res => res.json() )
+                .catch( err => console.error( err ) );
         }
 
-        this.setState( { baseUrl: base } );
+        const isAuth = this.checkExpiredToken();
+        let user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
 
+        user = user.name ? user : {};
 
-        if ( this.checkExpiredToken() )
-        {
-            const user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
+        this.setState( { baseUrl: base, isAuth, user } );
 
-            this.setState( { isAuth: true, user } );
-        }
 
     }
 
