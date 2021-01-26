@@ -36,7 +36,10 @@ class AppProvider extends Component
         const isAuth = this.checkExpiredToken();
         let user = JSON.parse( localStorage.getItem( 'kryztalz-user' ) );
 
-        user = user.name ? user : {};
+        if ( !user || !user.name )
+        {
+            user = {};
+        }
 
         this.setState( { baseUrl: base, isAuth, user } );
 
