@@ -125,11 +125,15 @@ class AppProvider extends Component
 
     login = ( user ) =>
     {
-        const { token, expires, name, email } = user;
-        localStorage.setItem( 'kryztalz-token', token );
-        localStorage.setItem( 'kryztalz-token-exp', expires );
-        localStorage.setItem( 'kryztalz-user', JSON.stringify( { name, email } ) );
-        this.setState( { isAuth: true, user: { name, email } } );
+        if ( user )
+        {
+            const { token, expires, name, email } = user;
+            localStorage.setItem( 'kryztalz-token', token );
+            localStorage.setItem( 'kryztalz-token-exp', expires );
+            localStorage.setItem( 'kryztalz-user', JSON.stringify( { name, email } ) );
+            this.setState( { isAuth: true, user: { name, email } } );
+
+        }
 
     };
 
