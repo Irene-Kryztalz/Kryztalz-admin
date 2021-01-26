@@ -12,7 +12,7 @@ function Index ()
     return (
         <Main>
             {
-                isAuth ? < Dashboard /> : <SignIn />
+                isAuth ? <Dashboard /> : <SignIn />
             }
         </Main>
 
